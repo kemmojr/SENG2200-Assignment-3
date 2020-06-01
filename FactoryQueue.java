@@ -1,15 +1,14 @@
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Queue;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class FactoryQueue implements Queue {
+
+public class FactoryQueue implements Queue, Iterable{
     double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
     QueueNode head, tail;
+    int size;
 
     public FactoryQueue(){//creates an empty queue
         head = null;
@@ -18,6 +17,7 @@ public class FactoryQueue implements Queue {
         productionTimePercentage = 0;
         starvingTimePercentage = 0;
         blockedTimePercentage = 0;
+        size = 0;
     }
 
     public FactoryQueue(QueueNode h){
@@ -27,29 +27,41 @@ public class FactoryQueue implements Queue {
         productionTimePercentage = 0;
         starvingTimePercentage = 0;
         blockedTimePercentage = 0;
+        size = 1;
     }
 
     public void calculateTotalTime(){
-
+        totalTime = 0;
     }
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        if (size>0){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean contains(Object o) {
+        QueueNode n = head;
+        for (int i = 0; i < size; i++) {
+            if (n.getData().equals(o)){
+                return true;
+            } else {
+                n = n.getNext();
+            }
+        }
         return false;
     }
 
     @Override
     public Iterator iterator() {
-        return null;
+        return new ListIterator();
     }
 
     @Override
@@ -64,22 +76,50 @@ public class FactoryQueue implements Queue {
 
     @Override
     public Object[] toArray(IntFunction generator) {
-        return new Object[0];
+        return null;
     }
 
     @Override
     public Object[] toArray(Object[] a) {
-        return new Object[0];
+        return null;
     }
 
     @Override
     public boolean add(Object o) {
-        return false;
+        QueueNode n = new QueueNode((String) o);
+        n.setPrevious(tail);
+        tail.setNext(n);
+        n.setNext(null);
+        size++;
+        return true;
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        QueueNode n = head;
+        for (int i = 0; i < size; i++) {
+            if (n.getData().equals(o)){
+                if (n==head){
+                    n.getNext().setPrevious(null);
+                    n.setNext(null);
+                    n.setPrevious(null);
+                    n.setData(null);
+                } else if (n==tail){
+                    n.getPrevious().setNext(null);
+                    n.setNext(null);
+                    n.setPrevious(null);
+                    n.setData(null);
+                } else {
+                    n.getNext().setPrevious(null);
+                    n.getPrevious().setNext(null);
+                    n.setNext(null);
+                    n.setPrevious(null);
+                    n.setData(null);
+                }
+            }
+        }
+        size--;
+        return true;
     }
 
     @Override
@@ -143,8 +183,18 @@ public class FactoryQueue implements Queue {
     }
 
     @Override
-    public Object remove() {
-        return null;
+    public Object remove() {//returns and removes the head of the queue
+        if (size==0){
+            return null;
+        }
+        QueueNode h = head;
+        QueueNode n = new QueueNode(head);//Not the greatest way to acomplish this but due to java's garbage collection system it works
+        h.getNext().setPrevious(null);
+        h.setNext(null);
+        h.setPrevious(null);
+        h.setData(null);
+        size--;
+        return n;
     }
 
     @Override
@@ -158,7 +208,38 @@ public class FactoryQueue implements Queue {
     }
 
     @Override
-    public Object peek() {
-        return null;
+    public Object peek() {//returns the head of the queue
+        if (size==0){
+            return null;
+        }
+        return head;
+    }
+
+    private class ListIterator implements Iterator {//implementation of iterator
+        private QueueNode current;
+
+
+        public ListIterator(){//implementation of iterator
+            current = head;
+        }
+
+        public boolean hasNext(){//implementation of iterator check for next
+            if (current.getNext()!=head){
+                return true;
+            }
+            return false;
+        }
+
+
+        public String next(){//implementation of iterator move to next and return data
+
+            current = current.getNext();
+            String data = current.getData();
+            return data;
+        }
+
+        public void remove(){//required to implement iterator but not used
+            throw new UnsupportedOperationException();
+        }
     }
 }
