@@ -7,7 +7,8 @@ import java.util.stream.Stream;
 
 public class FactoryQueue implements Queue, Iterable{
     double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
-    QueueNode head, tail;
+    FactoryQueue next, previous;
+    Item head, tail;
     int size;
 
     public FactoryQueue(){//creates an empty queue
@@ -20,7 +21,7 @@ public class FactoryQueue implements Queue, Iterable{
         size = 0;
     }
 
-    public FactoryQueue(QueueNode h){
+    public FactoryQueue(Item h){
         head = h;
         tail = h;
         totalTime = 0;
@@ -28,6 +29,26 @@ public class FactoryQueue implements Queue, Iterable{
         starvingTimePercentage = 0;
         blockedTimePercentage = 0;
         size = 1;
+    }
+
+    public void setNext(FactoryQueue next) {
+        this.next = next;
+    }
+
+    public void setPrevious(FactoryQueue previous) {
+        this.previous = previous;
+    }
+
+    public FactoryQueue getNext() {
+        return next;
+    }
+
+    public FactoryQueue getPrevious() {
+        return previous;
+    }
+
+    public FactoryQueue getData(){
+        return this;
     }
 
     public void calculateTotalTime(){
@@ -48,7 +69,7 @@ public class FactoryQueue implements Queue, Iterable{
 
     @Override
     public boolean contains(Object o) {
-        QueueNode n = head;
+        Item n = head;
         for (int i = 0; i < size; i++) {
             if (n.getData().equals(o)){
                 return true;
@@ -61,7 +82,7 @@ public class FactoryQueue implements Queue, Iterable{
 
     @Override
     public Iterator iterator() {
-        return new ListIterator();
+        return new QueueIterator();
     }
 
     @Override
@@ -86,7 +107,7 @@ public class FactoryQueue implements Queue, Iterable{
 
     @Override
     public boolean add(Object o) {
-        QueueNode n = new QueueNode((String) o);
+        Item n = new Item((String) o);
         n.setPrevious(tail);
         tail.setNext(n);
         n.setNext(null);
@@ -96,7 +117,7 @@ public class FactoryQueue implements Queue, Iterable{
 
     @Override
     public boolean remove(Object o) {
-        QueueNode n = head;
+        Item n = head;
         for (int i = 0; i < size; i++) {
             if (n.getData().equals(o)){
                 if (n==head){
@@ -187,8 +208,8 @@ public class FactoryQueue implements Queue, Iterable{
         if (size==0){
             return null;
         }
-        QueueNode h = head;
-        QueueNode n = new QueueNode(head);//Not the greatest way to acomplish this but due to java's garbage collection system it works
+        Item h = head;
+        Item n = new Item(head);//Not the greatest way to acomplish this but due to java's garbage collection system it works
         h.getNext().setPrevious(null);
         h.setNext(null);
         h.setPrevious(null);
@@ -215,11 +236,11 @@ public class FactoryQueue implements Queue, Iterable{
         return head;
     }
 
-    private class ListIterator implements Iterator {//implementation of iterator
-        private QueueNode current;
+    private class QueueIterator implements Iterator {//implementation of iterator
+        private Item current;
 
 
-        public ListIterator(){//implementation of iterator
+        public QueueIterator(){//implementation of iterator
             current = head;
         }
 

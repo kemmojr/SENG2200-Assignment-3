@@ -1,28 +1,28 @@
-public class QueueNode {
-    private QueueNode next, previous;
+public class Item {
+    private Item next, previous;
     private String data;
 
-    public QueueNode(String s){
+    public Item(String s){
         data = s;
     }
 
-    public QueueNode(String s, QueueNode nxt, QueueNode prev){
+    public Item(String s, Item nxt, Item prev){
         next = nxt;
         previous = nxt;
         data = s;
     }
 
-    public QueueNode(QueueNode q){//copy constructor
+    public Item(Item q){//copy constructor
         this.next = q.next;
         this.previous = q.previous;
         this.data = q.data;
     }
 
-    public QueueNode getNext() {
+    public Item getNext() {
         return next;
     }
 
-    public QueueNode getPrevious() {
+    public Item getPrevious() {
         return previous;
     }
 
@@ -30,11 +30,11 @@ public class QueueNode {
         return data;
     }
 
-    public void setNext(QueueNode next) {
+    public void setNext(Item next) {
         this.next = next;
     }
 
-    public void setPrevious(QueueNode previous) {
+    public void setPrevious(Item previous) {
         this.previous = previous;
     }
 

@@ -6,39 +6,7 @@ import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class interStageStorage extends Stage{
-    double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
-    Item head, tail;
-    int size;
-
-    public Event processStart(Item item){
-        currentItem = item;
-        double d = r.nextDouble();
-        double time =  M + N * (d-0.5);
-        return new Event(time,this);
-    }
-    public Event processFinish(){
-        if (!nextQueue.isFull())){
-            nextQueue.add(currentItem);
-        }
-                else{
-            blocked = true;
-            return null;
-        }
-        if previousQueue.hasNext()
-        {
-            currentItem = previousQueue.next()
-        }
-                else{
-            starved = true;
-            return null;
-        }
-        return processStart();
-    }
-
-
-
-
+public class finalStageStorage extends Stage {
     @Override
     public void calculateTotalTime() {
         //
