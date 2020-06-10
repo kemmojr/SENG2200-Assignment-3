@@ -2,44 +2,40 @@ import java.util.Iterator;
 import java.util.*;
 import java.io.*;
 
-public class QueueList implements Iterable{
+public class List implements Iterable{
 
-     private FactoryQueue sentinel;
+        private BeginningStage sentinel;
+        private FinalStage tail;
         private int size = 0;
 
-        public QueueList(Item first) {//Creates a Linkedlist object with one node from a polygon
-            FactoryQueue n = new FactoryQueue(first);
-            sentinel = new FactoryQueue();
-            sentinel.setNext(n);
-            sentinel.setPrevious(n);
+        public List(Item first,  int iM, int iN) {//Creates a Linkedlist object with one node from a polygon
+            ItemQueue n = new ItemQueue();
+            sentinel = new BeginningStage(first, n, iM, iN);
             size++;
 
         }
 
-        public QueueList() {//creates an empty LinkedList
-            sentinel = new FactoryQueue();
+        public List() {//creates an empty LinkedList
+            sentinel = null;
         }
 
-        private FactoryQueue getSentinel(){
+        public BeginningStage getSentinel(){
             return sentinel;
         }
 
-        private void insert(FactoryQueue before,Item inserting){//insert a item before a specified node
-            FactoryQueue newN = new FactoryQueue(inserting);
-            newN.setNext(before);
-            newN.setPrevious(before.getPrevious());
-            before.getPrevious().setNext( newN);
-            before.setPrevious(newN);
+        public void insert(ItemQueue before,InterStage inserting){//insert a item before a specified node
+            InterStage newS = new InterStage(inserting);
+            newS.setPrevious(before);
+            newS.setNext(before.getNext1().getNext());
+            before.setNext(newS);
             size++;
         }
 
-        public void prepend(Item p) {//Add a new node at the start of the LL
-            FactoryQueue n = new FactoryQueue(p);
-            n.setPrevious(sentinel);
-            n.setNext(sentinel.getNext());
-            sentinel.getNext().setPrevious(n);
-            sentinel.setNext(n);
-            size++;
+        public void insert(InterStage before, ItemQueue it){
+            ItemQueue item = new ItemQueue(it);
+            item.setPrevious(before);
+            item.setNext(before.getNext().getNext1());
+            before.setNext(item);
         }
 
         public void append(Item p) {//Add a new node at the end of the LL
@@ -57,12 +53,12 @@ public class QueueList implements Iterable{
         }
 
 
-        public void remove() {//remove from the start of the list
-            sentinel.getNext().getNext().setPrevious(sentinel);
-            sentinel.setNext(sentinel.getNext().getNext());
+        /*public void remove() {//remove from the start of the list
+            sentinel.getNext().getNext1().setPrevious(sentinel);
+            sentinel.setNext(sentinel.getNext().getNext1());
             //sentinel.getNext().delete();
             size--;
-        }
+        }*/
 
         public int getSize(){
             return size;

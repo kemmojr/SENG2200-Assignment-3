@@ -10,6 +10,8 @@ public class PA3 {
         Qmax = Integer.parseInt(args[2]);
 
 
+
+
         PriorityQueue<Event> events = new PriorityQueue<Event>();
         while (stage6.numProccessed < 100000) {
             events.add(events.poll().process());

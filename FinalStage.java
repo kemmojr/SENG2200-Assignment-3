@@ -7,35 +7,31 @@ import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class BeginningStage extends Stage {
+public class FinalStage extends Stage {
 
     double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
     Item currentItem;
     int size, M, N;
     Random r;
     boolean blocked, starved, processing;
-    private ItemQueue nextQueue;
+    private ItemQueue previousQueue;
 
-    public BeginningStage(Item it, ItemQueue next, int iM, int iN) {
+    public FinalStage(Item it, ItemQueue previous, int iM, int iN) {
         super(iM, iN);
         currentItem = it;
-        nextQueue = next;
+        previousQueue = previous;
         M = iM;
         N = iN;
         r = new Random();
     }
 
-    public BeginningStage(int iM, int iN) {
+    public FinalStage(int iM, int iN) {
         super(iM, iN);
     }
 
     @Override
     public void calculateTotalTime() {
         //
-    }
-
-    public void setNext(ItemQueue it){
-        nextQueue = it;
     }
 
 }

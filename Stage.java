@@ -16,6 +16,15 @@ public abstract class Stage{
            r = new Random();
         }
 
+        public Stage(Item it, ItemQueue next, ItemQueue previous, int iM, int iN){
+            currentItem = it;
+            nextQueue = next;
+            previousQueue =  previous;
+            M = iM;
+            N = iN;
+            r = new Random();
+        }
+
         /*public Event processStart(Item h)
         {
                 //calculate end time
@@ -36,16 +45,16 @@ public abstract class Stage{
             //i.e. time halted = time-StopTime;
                 currentItem = item;
                 double d = r.nextDouble();
-                double time =  M + N * (d-0.5);
-                return new Event(time,this);
+                double t =  M + N * (d-0.5);
+                return new Event(t,this);
 
         }
 
         public Event processFinish(double time){
-                if (!nextQueue.isFull())){
+            double stopTime;
+            if (!nextQueue.isFull()){
                         nextQueue.add(currentItem);
-                }
-                else{
+                } else{
                      blocked = true;
                 stopTime = time;
                      return null;
@@ -63,8 +72,21 @@ public abstract class Stage{
 
         }
 
-        public Stage(Item h){
-            //
-        }
-        public abstract void calculateTotalTime();
+    public ItemQueue getNext() {
+        return nextQueue;
+    }
+
+    public ItemQueue getPrevious() {
+        return previousQueue;
+    }
+
+    public void setNext(ItemQueue next) {
+        nextQueue = next;
+    }
+
+    public void setPrevious(ItemQueue prev){
+            previousQueue = prev;
+    }
+
+    public abstract void calculateTotalTime();
 }
