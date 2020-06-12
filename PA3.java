@@ -4,11 +4,13 @@ import java.io.*;
 
 public class PA3 {
     public static void main(String args[]){
-        int M, N, Qmax, numProccess = 0;
+        int M, N, Qmax, numProcess = 0;
+        //Parsing the string arguments into int for later use
         M = Integer.parseInt(args[0]);
         N = Integer.parseInt(args[1]);
         Qmax = Integer.parseInt(args[2]);
-        List system = new List(M,N);
+
+        List system = new List(M,N,Qmax);
         //Assemble the system structure as per the spec. I have named each addition the same as it's counterpart on the spec diagram
         system.append();
         system.append("S1");
@@ -25,15 +27,16 @@ public class PA3 {
         system.append(5.6);
         system.append(6);
 
-
-
-
         PriorityQueue<Event> events = new PriorityQueue<Event>();
-        while (system.getLast().numProcessed() < 100000) {
+        while (numProcess < 100000) {
             //events.add(events.poll().process());
-            system.getFirst().itemCreation();
-            numProccess++;
+            events.add(system.getFirst().itemCreation());
+            numProcess++;
+            if (numProcess>99999){
+                System.out.println("99999");
+            }
         }
+        System.out.println(events);
 
 
     }

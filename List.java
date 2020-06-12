@@ -9,10 +9,12 @@ public class List implements Iterable{
         private ItemQueue queueTail;
         private FinalStage finalTail;
         private int size = 0;
+        private int Qmax;
 
-        public List(int iM, int iN) {//Creates a Linkedlist object with one node from a polygon
-            ItemQueue n = new ItemQueue();
+        public List(int iM, int iN, int q) {//Creates a Linkedlist object with one node from a polygon
+            ItemQueue n = new ItemQueue(q);
             head = new BeginningStage(n, iM, iN,"A");
+            Qmax = q;
             size++;
 
         }
@@ -34,7 +36,7 @@ public class List implements Iterable{
         }
 
         public void insert(InterStage before, ItemQueue it){
-            ItemQueue item = new ItemQueue();
+            ItemQueue item = new ItemQueue(Qmax);
             item.setPrevious(before);
             item.setNext(before.getNext().getNext1());
             before.getNext().getNext1();
@@ -42,19 +44,21 @@ public class List implements Iterable{
         }
 
         public void append(double ItemQueue) {//Add a new ItemQueue at the end of the LL
-            ItemQueue n = new ItemQueue();
-            if (queueTail.getNext2()!=null && queueTail.size()<2){
+            ItemQueue n = new ItemQueue(Qmax);
+            if (queueTail.getNext2()!=null && queueTail.getNext1()!=null && queueTail.size()<3){
                 queueTail.getNext1().setNext(n);
                 queueTail.getNext2().setNext(n);
                 n.setPrevious(queueTail.getNext1());
                 n.setPrevious(queueTail.getNext2());
                 queueTail = n;
                 n.setNext(null);
-            } else {
+            } else if (queueTail.getNext1()!=null ){
                 queueTail.getNext1().setNext(n);
                 n.setPrevious(queueTail.getNext1());
                 n.setNext(null);
                 queueTail = n;
+            } else {
+                //
             }
             size++;
         }
@@ -81,10 +85,12 @@ public class List implements Iterable{
                 in.setNext(null);
                 queueTail.setNext(in);
                 stageTail = in;
+                in.setPrevious(queueTail);
             } else if (queueTail.getNext2()==null){
                 in.setNext(null);
                 queueTail.setNext(in);
                 stageTail = in;
+                in.setPrevious(queueTail);
             }
             size++;
         }
@@ -92,6 +98,7 @@ public class List implements Iterable{
         public void append(){
             BeginningStage b = new BeginningStage(head.getNext(),head.M,head.N,"B");
             head.getNext().setPrevious(b);
+            queueTail = head.getNext();
         }
 
         public void append(int finalStage){
@@ -104,7 +111,7 @@ public class List implements Iterable{
         }
 
         public FinalStage getLast(){
-            if (size==10){
+            if (size>10){
                 return finalTail;
             }
             return null;

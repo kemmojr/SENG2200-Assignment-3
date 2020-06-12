@@ -67,6 +67,16 @@ public abstract class Stage{
 
         }
 
+    public boolean checkForItems(){
+            if (!(previousQueue==null) && previousQueue.peek()!=null){
+                double d = r.nextDouble();
+                double t =  M + N * (d-0.5);
+                processStart(previousQueue.poll(),t);
+                return true;
+            }
+            return false;
+    }
+
     public ItemQueue getNext() {
         return nextQueue;
     }

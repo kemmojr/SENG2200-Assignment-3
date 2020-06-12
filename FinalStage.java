@@ -29,8 +29,7 @@ public class FinalStage extends Stage {
         super(iM, iN);
     }
 
-    @Override
-    public Event processFinish(double time){
+    public Event processFinished(double time){
             numProcessed++;
             stopTime = time;
         if (previousQueue.hasNext()){

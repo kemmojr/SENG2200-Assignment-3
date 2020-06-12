@@ -42,6 +42,8 @@ public class BeginningStage extends Stage {
         }
         double d = r.nextDouble();
         double t =  M + N * (d-0.5);
+        //return processFinish(150);
+        nextQueue.getNext1().checkForItems();
         return new Event(t,this);
 
     }
@@ -61,13 +63,14 @@ public class BeginningStage extends Stage {
         return processStart(currentItem,time);
     }
 
-    public void itemCreation(){//Generates a unique ID using the getID class and appends it's identifier to the end
-        getID g = new getID();
-        String identifier = g.getID()+ID;
-        currentItem = new Item(identifier);
-        double d = r.nextDouble();
-        double t =  M + N * (d-0.5);
-        processStart(currentItem,t);
+    public Event itemCreation(){//Generates a unique ID using the getID class and appends it's identifier to the end
+        //getID g = new getID();
+        //String sG = g + "";
+        //String identifier = sG.substring(0,5) +ID;
+        currentItem = new Item("123abc");
+        //double d = r.nextDouble();
+        //double t =  M + N * (d-0.5);
+        return processStart(currentItem,100);
     }
 
     public BeginningStage(int iM, int iN) {

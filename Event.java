@@ -17,4 +17,12 @@ public class Event implements Comparable<Event> {
         //compare the events
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "Time=" + time +
+                ", Stage=" + s +
+                "} \n";
+    }
 }
