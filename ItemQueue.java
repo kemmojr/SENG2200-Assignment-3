@@ -16,12 +16,15 @@ public class ItemQueue {
         items.add(it);
     }
 
-    public ItemQueue(ItemQueue item){
-        previousStage = item.previousStage;
-        nextStage = item.nextStage;
-        items = item.items;
-        Qmax = item.Qmax;
-        size = item.size;
+    public ItemQueue(Stage prev, Stage next, int Q){
+        previousStage.add(prev);
+        nextStage.add(next);
+        Qmax = Q;
+    }
+
+    public ItemQueue(Stage prev, int Q){
+        previousStage.add(prev);
+        Qmax = Q;
     }
 
     public boolean isFull(){
@@ -72,5 +75,9 @@ public class ItemQueue {
         if (previousStage.size()<2){
             previousStage.add(prev);
         }
+    }
+
+    public int size(){
+        return items.size();
     }
 }

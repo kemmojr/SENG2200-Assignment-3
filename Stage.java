@@ -5,9 +5,11 @@ public abstract class Stage{
 
         double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
         Item currentItem;
-        int size, M, N;
+        int size, M, N, numProcessed;
         Random r;
         boolean blocked, starved, processing;
+        double stopTime;
+        double blockedTime, starvedTime, processingTime;
         private ItemQueue previousQueue, nextQueue;
 
         public Stage(int iM, int iN){//creates an empty queue
@@ -22,27 +24,20 @@ public abstract class Stage{
             previousQueue =  previous;
             M = iM;
             N = iN;
-            r = new Random();
+            r = new Random(100);
         }
-
-        /*public Event processStart(Item h)
-        {
-                //calculate end time
-                return (end time, this)
-        }
-
-        public void processFinish()
-        {
-                //moveitemtostorage
-                //getnextitem
-        }
-
-        Event(Time,Item)*/
 
         public Event processStart(Item item, double time){
-            //check if blocked or stavered
+            //check if blocked or starved
             //if so add time based on stopTime
             //i.e. time halted = time-StopTime;
+            if (blocked){
+                blockedTime += time - stopTime;
+            } else if (starved){
+                starvedTime += time - stopTime;
+            } else {
+                processingTime += time;
+            }
                 currentItem = item;
                 double d = r.nextDouble();
                 double t =  M + N * (d-0.5);
@@ -51,14 +46,14 @@ public abstract class Stage{
         }
 
         public Event processFinish(double time){
-            double stopTime;
+
             if (!nextQueue.isFull()){
                         nextQueue.add(currentItem);
+                        numProcessed++;
                 } else{
                      blocked = true;
-                stopTime = time;
+                     stopTime = time;
                      return null;
-
                 }
                 if (previousQueue.hasNext())
                 {

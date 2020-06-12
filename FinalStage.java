@@ -11,14 +11,14 @@ public class FinalStage extends Stage {
 
     double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
     Item currentItem;
-    int size, M, N;
+    int size, M, N, numProcessed;
     Random r;
     boolean blocked, starved, processing;
     private ItemQueue previousQueue;
 
-    public FinalStage(Item it, ItemQueue previous, int iM, int iN) {
+    public FinalStage(ItemQueue previous, int iM, int iN) {
         super(iM, iN);
-        currentItem = it;
+        currentItem = null;
         previousQueue = previous;
         M = iM;
         N = iN;
@@ -27,6 +27,24 @@ public class FinalStage extends Stage {
 
     public FinalStage(int iM, int iN) {
         super(iM, iN);
+    }
+
+    @Override
+    public Event processFinish(double time){
+            numProcessed++;
+            stopTime = time;
+        if (previousQueue.hasNext()){
+            return processStart(previousQueue.next(),time);
+        }
+        else{
+            starved = true;
+            stopTime = time;
+            return null;
+        }
+    }
+
+    public int numProcessed(){
+        return numProcessed;
     }
 
     @Override

@@ -4,23 +4,25 @@ import java.io.*;
 
 public class List implements Iterable{
 
-        private BeginningStage sentinel;
-        private FinalStage tail;
+        private BeginningStage head;
+        private Stage stageTail;
+        private ItemQueue queueTail;
+        private FinalStage finalTail;
         private int size = 0;
 
-        public List(Item first,  int iM, int iN) {//Creates a Linkedlist object with one node from a polygon
+        public List(int iM, int iN) {//Creates a Linkedlist object with one node from a polygon
             ItemQueue n = new ItemQueue();
-            sentinel = new BeginningStage(first, n, iM, iN);
+            head = new BeginningStage(n, iM, iN,"A");
             size++;
 
         }
 
         public List() {//creates an empty LinkedList
-            sentinel = null;
+            head = null;
         }
 
-        public BeginningStage getSentinel(){
-            return sentinel;
+        public BeginningStage getHead(){
+            return head;
         }
 
         public void insert(ItemQueue before,InterStage inserting){//insert a item before a specified node
@@ -32,19 +34,80 @@ public class List implements Iterable{
         }
 
         public void insert(InterStage before, ItemQueue it){
-            ItemQueue item = new ItemQueue(it);
+            ItemQueue item = new ItemQueue();
             item.setPrevious(before);
             item.setNext(before.getNext().getNext1());
+            before.getNext().getNext1();
             before.setNext(item);
         }
 
-        public void append(Item p) {//Add a new node at the end of the LL
-            FactoryQueue n = new FactoryQueue(p);
-            n.setNext(sentinel);
-            n.setPrevious(sentinel.getPrevious());
-            sentinel.getPrevious().setNext(n);
-            sentinel.setPrevious(n);
+        public void append(double ItemQueue) {//Add a new ItemQueue at the end of the LL
+            ItemQueue n = new ItemQueue();
+            if (queueTail.getNext2()!=null && queueTail.size()<2){
+                queueTail.getNext1().setNext(n);
+                queueTail.getNext2().setNext(n);
+                n.setPrevious(queueTail.getNext1());
+                n.setPrevious(queueTail.getNext2());
+                queueTail = n;
+                n.setNext(null);
+            } else {
+                queueTail.getNext1().setNext(n);
+                n.setPrevious(queueTail.getNext1());
+                n.setNext(null);
+                queueTail = n;
+            }
             size++;
+        }
+
+        public void append(InterStage s){
+            InterStage in = new InterStage(s);
+            if (queueTail.getNext1()==null){
+                in.setNext(null);
+                queueTail.setNext(in);
+                in.setPrevious(queueTail);
+                stageTail = in;
+            } else if (queueTail.getNext2()==null){
+                in.setNext(null);
+                queueTail.setNext(in);
+                in.setPrevious(queueTail);
+                stageTail = in;
+            }
+            size++;
+        }
+
+        public void append(String interStage){
+            InterStage in = new InterStage(queueTail,head.M,head.N);
+            if (queueTail.getNext1()==null){
+                in.setNext(null);
+                queueTail.setNext(in);
+                stageTail = in;
+            } else if (queueTail.getNext2()==null){
+                in.setNext(null);
+                queueTail.setNext(in);
+                stageTail = in;
+            }
+            size++;
+        }
+
+        public void append(){
+            BeginningStage b = new BeginningStage(head.getNext(),head.M,head.N,"B");
+            head.getNext().setPrevious(b);
+        }
+
+        public void append(int finalStage){
+            FinalStage f = new FinalStage(queueTail,head.M,head.N);
+            finalTail = f;
+        }
+
+        public BeginningStage getFirst(){
+            return head;
+        }
+
+        public FinalStage getLast(){
+            if (size==10){
+                return finalTail;
+            }
+            return null;
         }
 
         // return Iterator instance
@@ -52,70 +115,69 @@ public class List implements Iterable{
             return new ListIterator();
         }
 
-
-        /*public void remove() {//remove from the start of the list
-            sentinel.getNext().getNext1().setPrevious(sentinel);
-            sentinel.setNext(sentinel.getNext().getNext1());
-            //sentinel.getNext().delete();
-            size--;
-        }*/
-
         public int getSize(){
             return size;
         }
-
-        public void insertSorted(Item input){
-            //insert a new node into it's correctly sorted position
-
-            //FactoryQueue comp = sorted.sentinel.getNext();//The node we are comparing to which changes
-            if (getSize()==0){
-                append(input);
-                return;
-            }
-            /*for (int i = 0; i < getSize(); i++) {
-                if (compareTo(input,comp.getData())<0){
-                    sorted.insert(comp,input);
-                    return;
-                } else if (i==getSize()-1){
-                    append(input);
-                    return;
-                }
-                comp = comp.getNext();*/
-        }
-
 
         @Override
         public String toString() {//A toString method that steps through the LinkedList and outputs in in the correct format
             String out = "";
 
-            ListIterator it = new ListIterator();
+            ListIterator it = new ListIterator();//Creates an iterator to cycle through the linkedlist
             while (it.hasNext()){
-                System.out.println(it.next());
+                Data d = it.next();
+                if (d.getQueue()!=null){//Some basic if statement logic that prints the type of the iterator, either ItemQueue or Stage for each alternation of the iterator
+                    System.out.println(d.getQueue());
+                } else {
+                    System.out.println(d.getStage());
+                }
             }
             return out;
         }
 
         private class ListIterator implements Iterator {//implementation of iterator
-            private FactoryQueue current;
+            //These are the current variables that alternate with each iteration
+            private Stage currentStage; //A current variable that is used if current is of type stage
+            private ItemQueue currentQueue; //A current variable that is used if current is of type ItemQueue
+            private boolean currentType = true; //true is Stage, false is queue
 
 
             public ListIterator(){//implementation of iterator
-                current = sentinel;
-            }
+                currentStage = head;
+            }//A basic constructor that sets the iterator to the head of the linkedlist
 
             public boolean hasNext(){//implementation of iterator check for next
-                if (current.getNext()!=sentinel){
+                if (currentStage.getNext()!=null){
                     return true;
                 }
                 return false;
             }
 
 
-            public FactoryQueue next(){//implementation of iterator move to next and return data
+            public Data next(){//implementation of iterator move to next and return data
+                //Features the additional checks to see if there are parallel stages and to accommodate iterating them
+                boolean startingType = currentType;
+                Data d = null;
+                if (currentType && currentStage.getPrevious().getNext2()==null){//Checks to see if there are parallel stages and alternates the type accordingly
+                    currentType =false;
+                } else {
+                    currentType = true;
+                }
 
-                current = current.getNext();
-                FactoryQueue data = current.getData();
-                return data;
+
+
+                if (currentType==false){
+                    currentQueue = currentStage.getNext();
+                    d = new Data(currentQueue,null);
+                } else if (currentType){
+                    currentStage = currentStage.getNext().getNext1();
+                    d = new Data(null,currentStage);
+                } else if (currentType==startingType){//A check to make sure that parallel stages are iterated
+                    currentStage = currentStage.getPrevious().getNext2();
+                    d = new Data(null,currentStage);
+                }
+
+                return d;
             }
 
             public void remove(){//required to implement iterator but not used

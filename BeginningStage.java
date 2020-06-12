@@ -11,18 +11,63 @@ public class BeginningStage extends Stage {
 
     double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
     Item currentItem;
+    String ID;
     int size, M, N;
     Random r;
     boolean blocked, starved, processing;
     private ItemQueue nextQueue;
 
-    public BeginningStage(Item it, ItemQueue next, int iM, int iN) {
+    public BeginningStage(ItemQueue next, int iM, int iN, String identifier) {
         super(iM, iN);
-        currentItem = it;
+        ID = identifier;
+        currentItem = null;
         nextQueue = next;
         M = iM;
         N = iN;
         r = new Random();
+    }
+
+
+    @Override
+    public Event processStart(Item item, double time){
+        //check if blocked or starved
+        //if so add time based on stopTime
+        //i.e. time halted = time-StopTime;
+        if (blocked){
+            blockedTime += time - stopTime;
+        } else if (starved){
+            starvedTime += time - stopTime;
+        } else {
+            processingTime += time;
+        }
+        double d = r.nextDouble();
+        double t =  M + N * (d-0.5);
+        return new Event(t,this);
+
+    }
+
+    @Override
+    public Event processFinish(double time){
+
+        if (!nextQueue.isFull()){
+            nextQueue.add(currentItem);
+            numProcessed++;
+        } else{
+            blocked = true;
+            stopTime = time;
+            return null;
+        }
+        itemCreation();
+        return processStart(currentItem,time);
+    }
+
+    public void itemCreation(){//Generates a unique ID using the getID class and appends it's identifier to the end
+        getID g = new getID();
+        String identifier = g.getID()+ID;
+        currentItem = new Item(identifier);
+        double d = r.nextDouble();
+        double t =  M + N * (d-0.5);
+        processStart(currentItem,t);
     }
 
     public BeginningStage(int iM, int iN) {
@@ -36,6 +81,10 @@ public class BeginningStage extends Stage {
 
     public void setNext(ItemQueue it){
         nextQueue = it;
+    }
+
+    public ItemQueue getNext(){
+        return nextQueue;
     }
 
 }

@@ -15,11 +15,10 @@ public class InterStage extends Stage{
     boolean blocked, starved, processing;
     private ItemQueue previousQueue, nextQueue;
 
-    public InterStage(Item it, ItemQueue next, ItemQueue previous, int iM, int iN) {
+    public InterStage(ItemQueue p, int iM, int iN) {
         super(iM, iN);
-        currentItem = it;
-        nextQueue = next;
-        previousQueue = previous;
+        previousQueue = p;
+        currentItem = null;
         M = iM;
         N = iN;
         r = new Random();
@@ -41,10 +40,6 @@ public class InterStage extends Stage{
 
     public void setNext(ItemQueue nextQueue) {
         this.nextQueue = nextQueue;
-    }
-
-    public InterStage(int iM, int iN) {
-        super(iM, iN);
     }
 
     @Override
