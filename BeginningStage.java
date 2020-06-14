@@ -68,9 +68,9 @@ public class BeginningStage extends Stage {
         //String sG = g + "";
         //String identifier = sG.substring(0,5) +ID;
         currentItem = new Item("123abc");
-        //double d = r.nextDouble();
-        //double t =  M + N * (d-0.5);
-        return processStart(currentItem,100);
+        double d = r.nextDouble();
+        double t =  M + N * (d-0.5);
+        return processStart(currentItem,t);
     }
 
     public BeginningStage(int iM, int iN) {

@@ -1,6 +1,6 @@
 public class Event implements Comparable<Event> {
-    double time;
-    Stage s;
+    private double time;
+    private Stage s;
 
     public Event(double t, Stage s1) {
         time = t;
@@ -8,7 +8,11 @@ public class Event implements Comparable<Event> {
     }
 
     public Event process() {
-        return s.processFinish(time);
+        return s.processFinish();
+    }
+
+    public double getTime(){
+        return time;
     }
 
 

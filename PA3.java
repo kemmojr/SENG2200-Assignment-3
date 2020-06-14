@@ -5,6 +5,8 @@ import java.io.*;
 public class PA3 {
     public static void main(String args[]){
         int M, N, Qmax, numProcess = 0;
+        double time = 0;
+        Event currentEvent;
         //Parsing the string arguments into int for later use
         M = Integer.parseInt(args[0]);
         N = Integer.parseInt(args[1]);
@@ -30,6 +32,10 @@ public class PA3 {
         PriorityQueue<Event> events = new PriorityQueue<Event>();
         while (numProcess < 100000) {
             //events.add(events.poll().process());
+            currentEvent = events.poll();
+            time = currentEvent.getTime();
+            Stage.updateTime(time);
+            ItemQueue.updateTime(time);
             events.add(system.getFirst().itemCreation());
             numProcess++;
             if (numProcess>99999){

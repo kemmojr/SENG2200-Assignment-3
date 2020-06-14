@@ -11,6 +11,7 @@ public abstract class Stage{
         double stopTime;
         double blockedTime, starvedTime, processingTime;
         private ItemQueue previousQueue, nextQueue;
+        private static double globalTime;
 
         public Stage(int iM, int iN){//creates an empty queue
            M = iM;
@@ -27,16 +28,20 @@ public abstract class Stage{
             r = new Random(100);
         }
 
-        public Event processStart(Item item, double time){
+        public static void updateTime(double time){
+            globalTime = time;
+        }
+
+        public Event processStart(Item item){
             //check if blocked or starved
             //if so add time based on stopTime
             //i.e. time halted = time-StopTime;
             if (blocked){
-                blockedTime += time - stopTime;
+                blockedTime += globalTime - stopTime;
             } else if (starved){
-                starvedTime += time - stopTime;
+                starvedTime += globalTime - stopTime;
             } else {
-                processingTime += time;
+                processingTime += globalTime;
             }
                 currentItem = item;
                 double d = r.nextDouble();
@@ -45,23 +50,23 @@ public abstract class Stage{
 
         }
 
-        public Event processFinish(double time){
+        public Event processFinish(){
 
             if (!nextQueue.isFull()){
                         nextQueue.add(currentItem);
                         numProcessed++;
                 } else{
                      blocked = true;
-                     stopTime = time;
+                     stopTime = globalTime;
                      return null;
                 }
                 if (previousQueue.hasNext())
                 {
-                   return processStart(previousQueue.next(),time);
+                   return processStart(previousQueue.next());
                 }
                 else{
                    starved = true;
-                    stopTime = time;
+                    stopTime = globalTime;
                    return null;
                 }
 
@@ -71,7 +76,7 @@ public abstract class Stage{
             if (!(previousQueue==null) && previousQueue.peek()!=null){
                 double d = r.nextDouble();
                 double t =  M + N * (d-0.5);
-                processStart(previousQueue.poll(),t);
+                processStart(previousQueue.poll());
                 return true;
             }
             return false;
@@ -91,6 +96,14 @@ public abstract class Stage{
 
     public void setPrevious(ItemQueue prev){
             previousQueue = prev;
+    }
+
+    public boolean isBlocked(){
+            return blocked;
+    }
+
+    public boolean isStarved() {
+        return starved;
     }
 
     public abstract void calculateTotalTime();
