@@ -3,13 +3,13 @@ import java.util.*;
 public abstract class Stage{
 
 
-        double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
+        double productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
+        double totalTime, productionTime, starvingTime, blockedTime;
         Item currentItem;
         int size, M, N, numProcessed;
         Random r;
         boolean blocked, starved, processing;
         double stopTime;
-        double blockedTime, starvedTime, processingTime;
         private ItemQueue previousQueue, nextQueue;
         private static double globalTime;
 
@@ -39,9 +39,9 @@ public abstract class Stage{
             if (blocked){
                 blockedTime += globalTime - stopTime;
             } else if (starved){
-                starvedTime += globalTime - stopTime;
+                starvingTime += globalTime - stopTime;
             } else {
-                processingTime += globalTime;
+                productionTime += globalTime;
             }
                 currentItem = item;
                 double d = r.nextDouble();
@@ -50,36 +50,26 @@ public abstract class Stage{
 
         }
 
-        public Event processFinish(){
+    public Event processFinish(){
 
-            if (!nextQueue.isFull()){
-                        nextQueue.add(currentItem);
-                        numProcessed++;
-                } else{
-                     blocked = true;
-                     stopTime = globalTime;
-                     return null;
-                }
-                if (previousQueue.hasNext())
-                {
-                   return processStart(previousQueue.next());
-                }
-                else{
-                   starved = true;
-                    stopTime = globalTime;
-                   return null;
-                }
-
-        }
-
-    public boolean checkForItems(){
-            if (!(previousQueue==null) && previousQueue.peek()!=null){
-                double d = r.nextDouble();
-                double t =  M + N * (d-0.5);
-                processStart(previousQueue.poll());
-                return true;
+        if (!nextQueue.isFull()){
+                    nextQueue.add(currentItem);
+                    numProcessed++;
+            } else{
+                 blocked = true;
+                 stopTime = globalTime;
+                 return null;
             }
-            return false;
+            if (previousQueue.hasNext())
+            {
+               return processStart(previousQueue.next());
+            }
+            else{
+               starved = true;
+                stopTime = globalTime;
+               return null;
+            }
+
     }
 
     public ItemQueue getNext() {

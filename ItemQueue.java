@@ -5,6 +5,9 @@ public class ItemQueue {
     private ArrayList<Stage> previousStage, nextStage;
     private LinkedList<Item> items;
     private int Qmax;
+    private double averageTimeIn, averageNumItems;
+    private double totalTimeIn, totalItems;
+    private ArrayList<double> timeIn;
     private static double globalTime;
 
     public static void updateTime(double time){
@@ -23,6 +26,7 @@ public class ItemQueue {
         items = new LinkedList<>();
         previousStage = new ArrayList<>();
         nextStage = new ArrayList<>();
+        timeIn = new ArrayList<double>();
     }
 
     public ItemQueue(Stage prev, int Q){
@@ -46,17 +50,20 @@ public class ItemQueue {
     }
 
     public void add(Item it){
-
+        double addedTime = globalTime;
+        double removedTime;
         if (size()<Qmax)
             items.add(it);
-        if  (size()==1){
+        if  (size()==1 || nextStage.get(0).isStarved() || (nextStage.get(1)!=null && nextStage.get(1).isStarved())){
             for (Stage s:nextStage){
                 if (s.isStarved()){
                     s.processStart(items.poll());
+                    removedTime = globalTime;
+                    timeIn.add(addedTime-removedTime);
+
                 }
             }
         }
-        return;
     }
 
     public boolean hasNext(){

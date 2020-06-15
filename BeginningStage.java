@@ -9,13 +9,16 @@ import java.util.stream.Stream;
 
 public class BeginningStage extends Stage {
 
-    double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
+    double totalTimePercentage, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
+    double totalTime, productionTime, starvingTime, blockedTime;
+
     Item currentItem;
     String ID;
     int size, M, N;
     Random r;
     boolean blocked, starved, processing;
     private ItemQueue nextQueue;
+    private static double globalTime;
 
     public BeginningStage(ItemQueue next, int iM, int iN, String identifier) {
         super(iM, iN);
@@ -29,38 +32,36 @@ public class BeginningStage extends Stage {
 
 
     @Override
-    public Event processStart(Item item, double time){
+    public Event processStart(Item item){
         //check if blocked or starved
         //if so add time based on stopTime
         //i.e. time halted = time-StopTime;
         if (blocked){
-            blockedTime += time - stopTime;
+            blockedTime += globalTime - stopTime;
         } else if (starved){
-            starvedTime += time - stopTime;
+            starvingTime += globalTime - stopTime;
         } else {
-            processingTime += time;
+            productionTime += globalTime;
         }
         double d = r.nextDouble();
         double t =  M + N * (d-0.5);
-        //return processFinish(150);
-        nextQueue.getNext1().checkForItems();
         return new Event(t,this);
 
     }
 
     @Override
-    public Event processFinish(double time){
+    public Event processFinish(){
 
         if (!nextQueue.isFull()){
             nextQueue.add(currentItem);
             numProcessed++;
         } else{
             blocked = true;
-            stopTime = time;
+            stopTime = globalTime;
             return null;
         }
         itemCreation();
-        return processStart(currentItem,time);
+        return processStart(currentItem);
     }
 
     public Event itemCreation(){//Generates a unique ID using the getID class and appends it's identifier to the end
@@ -70,7 +71,7 @@ public class BeginningStage extends Stage {
         currentItem = new Item("123abc");
         double d = r.nextDouble();
         double t =  M + N * (d-0.5);
-        return processStart(currentItem,t);
+        return processStart(currentItem);
     }
 
     public BeginningStage(int iM, int iN) {
