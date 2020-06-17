@@ -30,21 +30,29 @@ public class BeginningStage extends Stage {
         r = new Random();
     }
 
+    public static void updateTime(double time){
+        globalTime = time;
+    }
 
     @Override
     public Event processStart(Item item){
         //check if blocked or starved
         //if so add time based on stopTime
         //i.e. time halted = time-StopTime;
+        double tempTime = 0;
         if (blocked){
-            blockedTime += globalTime - stopTime;
+            tempTime= globalTime - stopTime;
+            blockedTime += tempTime;
         } else if (starved){
-            starvingTime += globalTime - stopTime;
+            tempTime = globalTime - stopTime;
+            starvingTime += tempTime;
         } else {
-            productionTime += globalTime;
+            tempTime = globalTime;
+            productionTime += tempTime;
         }
         double d = r.nextDouble();
         double t =  M + N * (d-0.5);
+        processFinish();
         return new Event(t,this);
 
     }
@@ -69,8 +77,8 @@ public class BeginningStage extends Stage {
         //String sG = g + "";
         //String identifier = sG.substring(0,5) +ID;
         currentItem = new Item("123abc");
-        double d = r.nextDouble();
-        double t =  M + N * (d-0.5);
+        //double d = r.nextDouble();
+        //double t =  M + N * (d-0.5);
         return processStart(currentItem);
     }
 

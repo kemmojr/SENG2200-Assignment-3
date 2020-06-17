@@ -15,6 +15,7 @@ public class FinalStage extends Stage {
     Random r;
     boolean blocked, starved, processing;
     private ItemQueue previousQueue;
+    private static double globalTime;
 
     public FinalStage(ItemQueue previous, int iM, int iN) {
         super(iM, iN);
@@ -23,23 +24,29 @@ public class FinalStage extends Stage {
         M = iM;
         N = iN;
         r = new Random();
+        starved = true;
     }
 
     public FinalStage(int iM, int iN) {
         super(iM, iN);
+        starved = true;
     }
 
     public Event processFinished(double time){
             numProcessed++;
             stopTime = time;
         if (previousQueue.hasNext()){
-            return processStart(previousQueue.next(),time);
+            return processStart(previousQueue.next());
         }
         else{
             starved = true;
             stopTime = time;
             return null;
         }
+    }
+
+    public static void updateTime(double time){
+        globalTime = time;
     }
 
     public int numProcessed(){

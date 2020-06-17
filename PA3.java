@@ -31,10 +31,11 @@ public class PA3 {
 
         PriorityQueue<Event> events = new PriorityQueue<Event>();
         while (numProcess < 100000) {
-            //events.add(events.poll().process());
+            events.add(system.getFirst().itemCreation());
             currentEvent = events.poll();
             time = currentEvent.getTime();
             Stage.updateTime(time);
+            system.getFirst().updateTime(time);
             ItemQueue.updateTime(time);
             events.add(system.getFirst().itemCreation());
             numProcess++;

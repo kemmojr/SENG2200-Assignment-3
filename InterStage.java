@@ -14,6 +14,7 @@ public class InterStage extends Stage{
     Random r;
     boolean blocked, starved, processing;
     private ItemQueue previousQueue, nextQueue;
+    private static double globalTime;
 
     public InterStage(ItemQueue p, int iM, int iN) {
         super(iM, iN);
@@ -22,6 +23,7 @@ public class InterStage extends Stage{
         M = iM;
         N = iN;
         r = new Random();
+        starved = true;
     }
 
     public InterStage(InterStage inter){//copy constructor
@@ -32,6 +34,16 @@ public class InterStage extends Stage{
         M = inter.M;
         N = inter.N;
         r = new Random();
+        starved = inter.starved;
+    }
+
+    @Override
+    public boolean isStarved() {
+        return starved;
+    }
+
+    public static void updateTime(double time){
+        globalTime = time;
     }
 
     public void setPrevious(ItemQueue previousQueue) {
