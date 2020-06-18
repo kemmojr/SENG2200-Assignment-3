@@ -1,7 +1,4 @@
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -13,8 +10,7 @@ public class BeginningStage extends Stage {
     double totalTime, productionTime, starvingTime, blockedTime;
 
     Item currentItem;
-    String ID;
-    int size, M, N;
+    int size;
     Random r;
     boolean blocked, starved, processing;
     private ItemQueue nextQueue;
@@ -27,6 +23,14 @@ public class BeginningStage extends Stage {
         nextQueue = next;
         M = iM;
         N = iN;
+        r = new Random();
+    }
+
+
+    public BeginningStage(int iM, int iN, String id) {
+        super(iM, iN);
+        ID = id;
+        currentItem = null;
         r = new Random();
     }
 
@@ -52,14 +56,31 @@ public class BeginningStage extends Stage {
         }
         double d = r.nextDouble();
         double t =  M + N * (d-0.5);
-        processFinish();
+        t = t + globalTime;
         return new Event(t,this);
 
     }
 
     @Override
-    public Event processFinish(){
+    public LinkedList<Event> processFinish(){
+        LinkedList<Event> l = new LinkedList<>();
+        Event ev;
+        if (!nextQueue.isFull()){
+            ev =nextQueue.add(currentItem);
+            if(ev!=null)
+                l.add(ev);
+            numProcessed++;
+            l.add(itemCreation());
 
+        } else{
+            blocked = true;
+            stopTime = globalTime;
+            return null;
+        }
+
+        return l;
+
+/*
         if (!nextQueue.isFull()){
             nextQueue.add(currentItem);
             numProcessed++;
@@ -69,7 +90,7 @@ public class BeginningStage extends Stage {
             return null;
         }
         itemCreation();
-        return processStart(currentItem);
+        return processStart(currentItem);*/
     }
 
     public Event itemCreation(){//Generates a unique ID using the getID class and appends it's identifier to the end
@@ -82,9 +103,6 @@ public class BeginningStage extends Stage {
         return processStart(currentItem);
     }
 
-    public BeginningStage(int iM, int iN) {
-        super(iM, iN);
-    }
 
     @Override
     public void calculateTotalTime() {
@@ -98,5 +116,6 @@ public class BeginningStage extends Stage {
     public ItemQueue getNext(){
         return nextQueue;
     }
+
 
 }

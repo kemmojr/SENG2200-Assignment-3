@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 public class Event implements Comparable<Event> {
     private double time;
     private Stage s;
@@ -7,7 +9,7 @@ public class Event implements Comparable<Event> {
         s = s1;
     }
 
-    public Event process() {
+    public LinkedList<Event> process() {
         return s.processFinish();
     }
 

@@ -8,6 +8,7 @@ public abstract class Stage{
         Item currentItem;
         int size, M, N, numProcessed;
         Random r;
+        String ID;
         boolean blocked, starved, processing;
         double stopTime;
         private ItemQueue previousQueue, nextQueue;
@@ -36,6 +37,7 @@ public abstract class Stage{
             //check if blocked or starved
             //if so add time based on stopTime
             //i.e. time halted = time-StopTime;
+            //Random n = new Random();
             if (blocked){
                 blockedTime += globalTime - stopTime;
             } else if (starved){
@@ -46,29 +48,31 @@ public abstract class Stage{
                 currentItem = item;
                 double d = r.nextDouble();
                 double t =  M + N * (d-0.5);
+                t = t + globalTime;
                 return new Event(t,this);
-
         }
 
-    public Event processFinish(){
-
+    public LinkedList<Event> processFinish(){
+        LinkedList<Event> l = new LinkedList<>();
+        Event ev;
         if (!nextQueue.isFull()){
-                    nextQueue.add(currentItem);
+                    ev =nextQueue.add(currentItem);
+                    if(ev!=null)
+                        l.add(ev);
                     numProcessed++;
             } else{
                  blocked = true;
                  stopTime = globalTime;
                  return null;
             }
-            if (previousQueue.hasNext())
-            {
-               return processStart(previousQueue.next());
+            if (previousQueue.hasNext()){
+               l.add(processStart(previousQueue.next()));
             }
             else{
                starved = true;
                 stopTime = globalTime;
-               return null;
             }
+            return l;
 
     }
 
@@ -97,4 +101,9 @@ public abstract class Stage{
     }
 
     public abstract void calculateTotalTime();
+
+    @Override
+    public String toString() {
+        return ID + "\t\t" + productionTimePercentage + "\t\t" + starvingTime + "\t\t" + blockedTime + "\t\t" +totalTime;
+    }
 }

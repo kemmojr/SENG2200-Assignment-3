@@ -5,6 +5,7 @@ public class ItemQueue {
     private ArrayList<Stage> previousStage, nextStage;
     private LinkedList<Item> items;
     private int Qmax;
+    String ID;
     private double averageTimeIn, averageNumItems;
     private double totalTimeIn, totalItems;
     private ArrayList<Double> timeIn;
@@ -21,12 +22,13 @@ public class ItemQueue {
         return items.isEmpty();
     }
 
-    public ItemQueue(int q){
+    public ItemQueue(int q, String queueID){
         Qmax = q;
         items = new LinkedList<>();
         previousStage = new ArrayList<>();
         nextStage = new ArrayList<>();
         timeIn = new ArrayList<>();
+        ID = queueID;
     }
 
     public ItemQueue(Stage prev, int Q){
@@ -49,21 +51,21 @@ public class ItemQueue {
         return false;
     }
 
-    public void add(Item it){
+    public Event add(Item it){
         double addedTime = globalTime;
         double removedTime;
-        if (size()<Qmax)
+        if (size()<Qmax) {
             items.add(it);
-        if  (nextStage.size()==1 || (nextStage!=null && nextStage.get(0).isStarved()) || (nextStage.size() == 2 && nextStage.get(1)!=null && nextStage.get(1).isStarved())){
-            for (Stage s:nextStage){
-                if (s.isStarved()){
-                    s.processStart(items.poll());
+            for (Stage s : nextStage) {
+                if (s.isStarved()) {
                     removedTime = globalTime;
-                    timeIn.add(addedTime-removedTime);
-
+                    timeIn.add(addedTime - removedTime); //Time where an item is in the queue
+                    return s.processStart(items.poll());
                 }
             }
         }
+        return null;
+
     }
 
     public boolean hasNext(){
@@ -109,5 +111,10 @@ public class ItemQueue {
         if (previousStage.size()<2){
             previousStage.add(prev);
         }
+    }
+
+    @Override
+    public String toString() {
+        return  ID + "\t" + averageTimeIn + "\t" + averageNumItems;
     }
 }

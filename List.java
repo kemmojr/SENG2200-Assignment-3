@@ -5,6 +5,7 @@ import java.io.*;
 public class List implements Iterable{
 
         private BeginningStage head;
+        private BeginningStage head2;
         private Stage stageTail;
         private ItemQueue queueTail;
         private FinalStage finalTail;
@@ -12,7 +13,7 @@ public class List implements Iterable{
         private int Qmax;
 
         public List(int iM, int iN, int q) {//Creates a Linkedlist object with one node from a polygon
-            ItemQueue n = new ItemQueue(q);
+            ItemQueue n = new ItemQueue(q,"Q01");
             head = new BeginningStage(n, iM, iN,"A");
             Qmax = q;
             size++;
@@ -36,15 +37,15 @@ public class List implements Iterable{
         }
 
         public void insert(InterStage before, ItemQueue it){
-            ItemQueue item = new ItemQueue(Qmax);
+            ItemQueue item = new ItemQueue(Qmax, "id");
             item.setPrevious(before);
             item.setNext(before.getNext().getNext1());
             before.getNext().getNext1();
             before.setNext(item);
         }
 
-        public void append(double ItemQueue) {//Add a new ItemQueue at the end of the LL
-            ItemQueue n = new ItemQueue(Qmax);
+        public void append(double itemQueue) {//Add a new ItemQueue at the end of the LL
+            ItemQueue n = new ItemQueue(Qmax, "Q"+itemQueue);
             if (queueTail.getNext2()!=null && queueTail.getNext1()!=null && queueTail.size()<3){
                 queueTail.getNext1().setNext(n);
                 queueTail.getNext2().setNext(n);
@@ -80,7 +81,7 @@ public class List implements Iterable{
         }
 
         public void append(String interStage){
-            InterStage in = new InterStage(queueTail,head.M,head.N);
+            InterStage in = new InterStage(queueTail,head.M,head.N, interStage);
             if (queueTail.getNext1()==null){
                 in.setNext(null);
                 queueTail.setNext(in);
@@ -99,6 +100,7 @@ public class List implements Iterable{
             BeginningStage b = new BeginningStage(head.getNext(),head.M,head.N,"B");
             head.getNext().setPrevious(b);
             queueTail = head.getNext();
+            head2 = b;
         }
 
         public void append(int finalStage){
@@ -108,6 +110,10 @@ public class List implements Iterable{
 
         public BeginningStage getFirst(){
             return head;
+        }
+
+        public BeginningStage getSecond(){
+            return head2;
         }
 
         public FinalStage getLast(){

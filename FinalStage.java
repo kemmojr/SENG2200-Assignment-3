@@ -11,7 +11,7 @@ public class FinalStage extends Stage {
 
     double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
     Item currentItem;
-    int size, M, N, numProcessed;
+    int size, numProcessed;
     Random r;
     boolean blocked, starved, processing;
     private ItemQueue previousQueue;
@@ -27,9 +27,13 @@ public class FinalStage extends Stage {
         starved = true;
     }
 
-    public FinalStage(int iM, int iN) {
+    public FinalStage( ItemQueue p, int iM, int iN, String id) {
         super(iM, iN);
+        previousQueue = p;
         starved = true;
+        ID = id;
+        currentItem = null;
+        r = new Random();
     }
 
     public Event processFinished(double time){
