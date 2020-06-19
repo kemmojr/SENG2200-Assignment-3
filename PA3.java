@@ -87,7 +87,7 @@ public class PA3 {
         system.append("S5B");
         system.append(5.6);
         system.append(6);*/
-
+/*
         PriorityQueue<Event> events = new PriorityQueue<Event>();
         events.add(S0a.itemCreation());
         events.add(S0b.itemCreation());
@@ -97,7 +97,7 @@ public class PA3 {
             Stage.updateTime(time);
             ItemQueue.updateTime(time);
             events.addAll(currentEvent.process());
-        }
+        }*/
         //Iterator = system.iterator();
         //Stage current = system.getFirst();
         //ItemQueue currentQueue = system.getFirst().getNext();
@@ -109,20 +109,24 @@ public class PA3 {
         }
         System.out.println("Storage Queues:");
         System.out.println("-----------------------------------------------------------------------------");
+        System.out.println("Store\tAvgTime[t]\tAvgItems");
         for (ItemQueue i: queueList){
             System.out.println(i);
         }
 
         System.out.println("Production Paths:");
         System.out.println("-----------------------------------------------------------------------------");
-        System.out.println("Display the production paths");
+        System.out.println("S3a\t->\tS5a:");
+        System.out.println("S3a\t->\tS5b:");
+        System.out.println("S3b\t->\tS5a:");
+        System.out.println("S3b\t->\tS5b:");
 
         System.out.println("Production Items:");
         System.out.println("-----------------------------------------------------------------------------");
-        System.out.println("S0A" + "items produced");
-        System.out.println("S0B" + "items produced");
+        System.out.println("S0a:\t" + "items produced");
+        System.out.println("S0b:\t" + "items produced");
 
-        System.out.println(events);
+        //System.out.println(events);
 
 
     }

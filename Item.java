@@ -1,44 +1,19 @@
 public class Item {
-    private Item next, previous;
-    private String data;
+    private String data;//the string data
 
-    public Item(String s){
+    public Item(String s){//Item constructor which creates an item with data s
         data = s;
     }
 
-    public Item(String s, Item nxt, Item prev){
-        next = nxt;
-        previous = nxt;
-        data = s;
+    public Item(Item i){//copy constructor
+        this.data = i.data;
     }
 
-    public Item(Item q){//copy constructor
-        this.next = q.next;
-        this.previous = q.previous;
-        this.data = q.data;
-    }
-
-    public Item getNext() {
-        return next;
-    }
-
-    public Item getPrevious() {
-        return previous;
-    }
-
-    public String getData() {
+    public String getData() {//gets the data
         return data;
-    }
-
-    public void setNext(Item next) {
-        this.next = next;
-    }
-
-    public void setPrevious(Item previous) {
-        this.previous = previous;
     }
 
     public void setData(String data) {
         this.data = data;
-    }
+    }//sets the data
 }

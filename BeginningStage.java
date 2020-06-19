@@ -16,53 +16,26 @@ public class BeginningStage extends Stage {
     private ItemQueue nextQueue;
     private static double globalTime;
 
-    public BeginningStage(ItemQueue next, int iM, int iN, String identifier) {
+    public BeginningStage(ItemQueue next, int iM, int iN, String identifier) {//Constructor that creates a beginning stage with a next queue, identifier and all of the necessary data
         super(iM, iN);
         ID = identifier;
         currentItem = null;
         nextQueue = next;
-        M = iM;
-        N = iN;
-        r = new Random();
     }
 
 
-    public BeginningStage(int iM, int iN, String id) {
+    public BeginningStage(int iM, int iN, String id) {//Creates a beginning stage with an identifier and all of the necessary data
         super(iM, iN);
         ID = id;
         currentItem = null;
-        r = new Random();
     }
 
     public static void updateTime(double time){
         globalTime = time;
-    }
+    }//initialises the global time variable in beginning stage
 
     @Override
-    public Event processStart(Item item){
-        //check if blocked or starved
-        //if so add time based on stopTime
-        //i.e. time halted = time-StopTime;
-        double tempTime = 0;
-        if (blocked){
-            tempTime= globalTime - stopTime;
-            blockedTime += tempTime;
-        } else if (starved){
-            tempTime = globalTime - stopTime;
-            starvingTime += tempTime;
-        } else {
-            tempTime = globalTime;
-            productionTime += tempTime;
-        }
-        double d = r.nextDouble();
-        double t =  M + N * (d-0.5);
-        t = t + globalTime;
-        return new Event(t,this);
-
-    }
-
-    @Override
-    public LinkedList<Event> processFinish(){
+    public LinkedList<Event> processFinish(){//An overridden process finish which adds to the next queue if it isn't full and then starts the creation of a new item
         LinkedList<Event> l = new LinkedList<>();
         Event ev;
         if (!nextQueue.isFull()){
@@ -79,18 +52,6 @@ public class BeginningStage extends Stage {
         }
 
         return l;
-
-/*
-        if (!nextQueue.isFull()){
-            nextQueue.add(currentItem);
-            numProcessed++;
-        } else{
-            blocked = true;
-            stopTime = globalTime;
-            return null;
-        }
-        itemCreation();
-        return processStart(currentItem);*/
     }
 
     public Event itemCreation(){//Generates a unique ID using the getID class and appends it's identifier to the end
@@ -98,8 +59,8 @@ public class BeginningStage extends Stage {
         //String sG = g + "";
         //String identifier = sG.substring(0,5) +ID;
         currentItem = new Item("123abc");
-        //double d = r.nextDouble();
-        //double t =  M + N * (d-0.5);
+        double d = r.nextDouble();
+        double t =  M + N * (d-0.5);
         return processStart(currentItem);
     }
 
@@ -109,6 +70,8 @@ public class BeginningStage extends Stage {
         //
     }
 
+
+    //getters and setters
     public void setNext(ItemQueue it){
         nextQueue = it;
     }

@@ -1,21 +1,17 @@
 import java.util.LinkedList;
 
-public class Event implements Comparable<Event> {
+public class Event implements Comparable<Event> {//An event class that is used for returning multiple data types from a function
     private double time;
     private Stage s;
 
-    public Event(double t, Stage s1) {
+    public Event(double t, Stage s1) {//A event constructor that initialises the event with a time and the stage
         time = t;
         s = s1;
     }
 
-    public LinkedList<Event> process() {
-        return s.processFinish();
-    }
-
     public double getTime(){
         return time;
-    }
+    }//gets the time
 
 
     @Override

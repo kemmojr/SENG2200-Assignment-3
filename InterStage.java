@@ -16,58 +16,42 @@ public class InterStage extends Stage{
     private ItemQueue previousQueue, nextQueue;
     private static double globalTime;
 
-    public InterStage(ItemQueue p, int iM, int iN, String id) {
+    public InterStage(ItemQueue p, ItemQueue n, int iM, int iN, String id) {//A constructor that creates an interstage with a next, previous and all other necessary data
+        //The use of super is to avoid duplicates of various member variables
         super(iM, iN);
-        previousQueue = p;
-        currentItem = null;
-        M = iM;
-        N = iN;
-        r = new Random();
-        starved = true;
-        ID = id;
+        super.setPrevious(p);
+        super.setNext(n);
+        super.currentItem = null;
+        super.starved = true;
+        super.ID = id;
     }
 
-    public InterStage(ItemQueue p, ItemQueue n, int iM, int iN, String id) {
-        super(iM, iN);
-        previousQueue = p;
-        nextQueue = n;
-        currentItem = null;
-        M = iM;
-        N = iN;
-        r = new Random();
-        starved = true;
-        ID = id;
-    }
-
-    public InterStage(int iM, int iN, String id){
+    public InterStage(int iM, int iN, String id){//empty constructor
         super(iM,iN);
-        ID = id;
-        r = new Random();
-        starved = true;
-        currentItem = null;
+        super.currentItem = null;
+        super.starved = true;
+        super.ID = id;
     }
 
     public InterStage(InterStage inter){//copy constructor
         super(inter.M, inter.N);
-        currentItem = inter.currentItem;
-        nextQueue = inter.nextQueue;
-        previousQueue = inter.previousQueue;
-        M = inter.M;
-        N = inter.N;
-        r = new Random();
-        starved = inter.starved;
-        ID = inter.ID;
+        super.setNext(inter.nextQueue);
+        super.setPrevious(inter.previousQueue);
+        super.currentItem = inter.currentItem;
+        super.starved = inter.starved;
+        super.ID = inter.ID;
     }
 
     @Override
-    public boolean isStarved() {
+    public boolean isStarved() {//get starved
         return starved;
     }
 
     public static void updateTime(double time){
         globalTime = time;
-    }
+    }//initialises the global time in interstage
 
+    //setters
     public void setPrevious(ItemQueue previousQueue) {
         this.previousQueue = previousQueue;
     }

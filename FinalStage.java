@@ -17,26 +17,22 @@ public class FinalStage extends Stage {
     private ItemQueue previousQueue;
     private static double globalTime;
 
-    public FinalStage(ItemQueue previous, int iM, int iN) {
+    public FinalStage(ItemQueue previous, int iM, int iN) {//A constructor that initialises an empty final stage with all of the necessary data
         super(iM, iN);
-        currentItem = null;
-        previousQueue = previous;
-        M = iM;
-        N = iN;
-        r = new Random();
-        starved = true;
+        super.currentItem = null;
+        setPrevious(previous);
+        super.starved = true;
     }
 
-    public FinalStage( ItemQueue p, int iM, int iN, String id) {
+    public FinalStage( ItemQueue p, int iM, int iN, String id) {//Initialises a final stage
         super(iM, iN);
-        previousQueue = p;
-        starved = true;
-        ID = id;
-        currentItem = null;
-        r = new Random();
+        setPrevious(p);
+        super.starved = true;
+        super.ID = id;
+        super.currentItem = null;
     }
 
-    public Event processFinished(double time){
+    public Event processFinished(double time){//A specialised process finish for final stage
             numProcessed++;
             stopTime = time;
         if (previousQueue.hasNext()){
@@ -51,11 +47,11 @@ public class FinalStage extends Stage {
 
     public static void updateTime(double time){
         globalTime = time;
-    }
+    }//Initialises global timeon final stage
 
     public int numProcessed(){
         return numProcessed;
-    }
+    }//get numProcessed
 
     @Override
     public void calculateTotalTime() {
