@@ -9,7 +9,7 @@ public class Event implements Comparable<Event> {//An event class that is used f
         s = s1;
     }
 
-    public LinkedList<Event> process() {
+    public Event process() {
         return s.processFinish();
     }
 
@@ -20,7 +20,11 @@ public class Event implements Comparable<Event> {//An event class that is used f
 
     @Override
     public int compareTo(Event o) {
-        //compare the events
+        if (this.time<o.getTime()){
+            return -1;
+        }else if (this.time>o.getTime()){
+            return 1;
+        }
         return 0;
     }
 

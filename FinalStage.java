@@ -26,15 +26,15 @@ public class FinalStage extends Stage {
         super.currentItem = null;
     }
 
-    public Event processFinished(double time){//A specialised process finish for final stage
+    public Event processFinish(){//A specialised process finish for final stage
             numProcessed++;
-            stopTime = time;
+            stopTime = globalTime;
         if (super.getPrevious().hasNext()){
             return processStart(super.getPrevious().next());
         }
         else{
             starved = true;
-            stopTime = time;
+            stopTime = globalTime;
             return null;
         }
     }

@@ -89,11 +89,18 @@ public class PA3 {
         system.append(6);*/
 
         PriorityQueue<Event> events = new PriorityQueue<Event>();
-
+        int counter = 0;
         events.add(S0a.itemCreation());
         events.add(S0b.itemCreation());
-        LinkedList<Event> newEvents;
+        Event newEvent;
         while (time < 10000000) {
+            if (counter==185)
+                System.out.println(185);
+            if (events.size() == 0)
+            {
+                System.out.println("No more events");
+                System.exit(1);
+            }
             currentEvent = events.poll();
             if (currentEvent==null){
                 System.out.println("Current event is null");
@@ -103,36 +110,32 @@ public class PA3 {
             ItemQueue.updateTime(time);
 
             try {
-                if (currentEvent==null){
-                    System.out.println("Current event is null");
+                newEvent = currentEvent.process();
+                if (newEvent!=null){
+                    events.add(newEvent);
                 }
-                newEvents = currentEvent.process();
-                for (Event e: newEvents){
-                    if (e!=null){
-                        events.add(e);
-                    } else {
-                        System.out.println("An error has occurred");
-                    }
-                }
-                for (Stage s: stageList)
-                {
+                for (Stage s: stageList){
                     if (s.isStarved()){
-
+                        newEvent = s.attemptProcess();
+                        if (newEvent != null)
+                            events.add(newEvent);
                     } else if (s.isBlocked()){
-
+                        newEvent = s.attemptUnblock();
+                        if (newEvent != null)
+                            events.add(newEvent);
                     }
                 }
             } catch (Exception e){
                 System.out.println("NullPointerException");
             }
-
+            counter++;
         }
         //Iterator = system.iterator();
         //Stage current = system.getFirst();
         //ItemQueue currentQueue = system.getFirst().getNext();
         System.out.println("Production Stations:");
         System.out.println("-----------------------------------------------------------------------------");
-        System.out.println("Stage:\tWork[%]\tStarve[t]\tBlock[t]\tTotal[t]");
+        System.out.println("Stage:\tWork[%]\t\tStarve[t]\t\t\tBlock[t]");
         for (Stage s: stageList){
             System.out.println(s);
         }

@@ -26,23 +26,16 @@ public class BeginningStage extends Stage {
     }//initialises the global time variable in beginning stage
 
     @Override
-    public LinkedList<Event> processFinish(){//An overridden process finish which adds to the next queue if it isn't full and then starts the creation of a new item
-        LinkedList<Event> l = new LinkedList<>();
-        Event ev;
+    public Event processFinish(){//An overridden process finish which adds to the next queue if it isn't full and then starts the creation of a new item
         if (!getNext().isFull()){
-            ev =getNext().add(currentItem);
-            if(ev!=null)
-                l.add(ev);
+            getNext().add(currentItem);
             numProcessed++;
-            l.add(itemCreation());
-
+            return itemCreation();
         } else{
             blocked = true;
             stopTime = globalTime;
             return null;
         }
-
-        return l;
     }
 
     public Event itemCreation(){//Generates a unique ID using the getID class and appends it's identifier to the end

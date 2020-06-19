@@ -1,3 +1,4 @@
+import java.text.NumberFormat;
 import java.util.*;
 
 public abstract class Stage{
@@ -33,6 +34,20 @@ public abstract class Stage{
             globalTime = time;
         }//Initialises the global time in stage
 
+        public Event attemptProcess(){
+            if (previousQueue.size()>0){
+                return processStart(previousQueue.poll());
+            }
+            return null;
+        }
+
+        public Event attemptUnblock(){
+            if (nextQueue.size()<nextQueue.getQmax()){
+                return processFinish();
+            }
+            return null;
+        }
+
         public Event processStart(Item item){//The beginning of the processing of the Items.
             // Collects metrics about starving producing or blocked and starts the process finish which moves the item out of the stage and into the next queue
             //check if blocked or starved
@@ -43,7 +58,7 @@ public abstract class Stage{
                 starvingTime += globalTime - stopTime;
                 starved = false;
             } else {
-                productionTime += globalTime;
+                productionTime += globalTime;//WRONG
             }
                 currentItem = item;
                 double d = r.nextDouble();
@@ -52,30 +67,26 @@ public abstract class Stage{
                 return new Event(t,this);
         }
 
-    public LinkedList<Event> processFinish(){//Checks the next queue and adds the item to it if the queue is not full.
+    public Event processFinish(){//Checks the next queue and adds the item to it if the queue is not full.
         //Also updates the numprocessed
         //Returns a list of all of the events that occur during it's duration
-        LinkedList<Event> l = new LinkedList<>();
-        Event ev;
+
+
         if (!nextQueue.isFull()){
-            ev =nextQueue.add(currentItem);
-            if(ev!=null)
-                l.add(ev);
+            nextQueue.add(currentItem);
             numProcessed++;
-        }
-        else{
+        } else{
             blocked = true;
             stopTime = globalTime;
             return null;
-        }
-        if (previousQueue.hasNext()){
-           l.add(processStart(previousQueue.next()));
-        }
-        else{
-           starved = true;
+        } if (previousQueue.hasNext()){
+           return (processStart(previousQueue.next()));
+        } else{
+            starved = true;
+            currentItem = null;
             stopTime = globalTime;
         }
-        return l;
+        return null;
 
     }
 
@@ -109,6 +120,14 @@ public abstract class Stage{
 
     @Override
     public String toString() {//A toString method that formats the stage to display the metrics
-        return ID + "\t\t" + productionTimePercentage + "\t\t" + starvingTime + "\t\t\t" + blockedTime + "\t\t\t" +totalTime;
+        productionTimePercentage = (10000000 - (starvingTime+blockedTime))/10000000;
+        NumberFormat n = NumberFormat.getPercentInstance();
+        NumberFormat n2 = NumberFormat.getInstance();
+        n2.setGroupingUsed(true);
+        n2.setMaximumFractionDigits(2);
+        n2.setMinimumFractionDigits(2);
+        n.setMaximumFractionDigits(2);
+        n.setMinimumFractionDigits(2);
+        return ID + "\t\t" + n.format(productionTimePercentage) + "\t\t" + n2.format(starvingTime) + "\t\t\t\t" + n2.format(blockedTime);
     }
 }

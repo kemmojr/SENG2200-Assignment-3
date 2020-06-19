@@ -52,20 +52,14 @@ public class ItemQueue {
         return false;
     }
 
-    public Event add(Item it){//checks to see the next stage is empty and adds the item to the stage. Otherwise the item is added to the queue
+    public boolean add(Item it){//checks to see the next stage is empty and adds the item to the stage. Otherwise the item is added to the queue
         double addedTime = globalTime;
         double removedTime;
         if (size()<Qmax) {
             items.add(it);
-            for (Stage s : nextStage) {
-                if (s.isStarved()) {
-                    removedTime = globalTime;
-                    timeIn.add(addedTime - removedTime); //Time where an item is in the queue
-                    return s.processStart(items.poll());
-                }
-            }
+            return true;
         }
-        return null;
+        return false;
 
     }
 
@@ -112,6 +106,10 @@ public class ItemQueue {
         if (previousStage.size()<2){
             previousStage.add(prev);
         }
+    }
+
+    public int getQmax(){
+        return Qmax;
     }
 
     @Override
