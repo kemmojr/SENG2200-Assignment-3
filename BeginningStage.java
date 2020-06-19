@@ -47,14 +47,4 @@ public class BeginningStage extends Stage {
         double t =  M + N * (d-0.5);
         return processStart(currentItem);
     }
-
-
-    @Override
-    public void calculateTotalTime() {
-        //
-    }
-
-
-    //getters and setters
-
 }

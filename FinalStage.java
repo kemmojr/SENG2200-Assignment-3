@@ -9,8 +9,6 @@ import java.util.stream.Stream;
 
 public class FinalStage extends Stage {
 
-    private static double globalTime;
-
     public FinalStage(ItemQueue previous, int iM, int iN) {//A constructor that initialises an empty final stage with all of the necessary data
         super(iM, iN);
         super.currentItem = null;
@@ -46,10 +44,4 @@ public class FinalStage extends Stage {
     public int numProcessed(){
         return super.numProcessed;
     }//get numProcessed
-
-    @Override
-    public void calculateTotalTime() {
-        //
-    }
-
 }

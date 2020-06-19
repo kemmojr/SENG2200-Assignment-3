@@ -116,8 +116,6 @@ public abstract class Stage{
         return starved;
     }//gets starved
 
-    public abstract void calculateTotalTime();
-
     @Override
     public String toString() {//A toString method that formats the stage to display the metrics
         productionTimePercentage = (10000000 - (starvingTime+blockedTime))/10000000;

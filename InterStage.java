@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class InterStage extends Stage{
-    private static double globalTime;
 
     public InterStage(ItemQueue p, ItemQueue n, int iM, int iN, String id) {//A constructor that creates an interstage with a next, previous and all other necessary data
         //The use of super is to avoid duplicates of various member variables
@@ -44,19 +43,4 @@ public class InterStage extends Stage{
     public static void updateTime(double time){
         globalTime = time;
     }//initialises the global time in interstage
-
-    //setters
-    public void setPrevious(ItemQueue previousQueue) {
-        super.setPrevious(previousQueue);
-    }
-
-    public void setNext(ItemQueue nextQueue) {
-        super.setNext(nextQueue);
-    }
-
-    @Override
-    public void calculateTotalTime() {
-        //
-    }
-
 }
