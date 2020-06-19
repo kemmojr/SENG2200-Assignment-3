@@ -87,17 +87,46 @@ public class PA3 {
         system.append("S5B");
         system.append(5.6);
         system.append(6);*/
-/*
+
         PriorityQueue<Event> events = new PriorityQueue<Event>();
+
         events.add(S0a.itemCreation());
         events.add(S0b.itemCreation());
+        LinkedList<Event> newEvents;
         while (time < 10000000) {
             currentEvent = events.poll();
+            if (currentEvent==null){
+                System.out.println("Current event is null");
+            }
             time = currentEvent.getTime();
             Stage.updateTime(time);
             ItemQueue.updateTime(time);
-            events.addAll(currentEvent.process());
-        }*/
+
+            try {
+                if (currentEvent==null){
+                    System.out.println("Current event is null");
+                }
+                newEvents = currentEvent.process();
+                for (Event e: newEvents){
+                    if (e!=null){
+                        events.add(e);
+                    } else {
+                        System.out.println("An error has occurred");
+                    }
+                }
+                for (Stage s: stageList)
+                {
+                    if (s.isStarved()){
+
+                    } else if (s.isBlocked()){
+
+                    }
+                }
+            } catch (Exception e){
+                System.out.println("NullPointerException");
+            }
+
+        }
         //Iterator = system.iterator();
         //Stage current = system.getFirst();
         //ItemQueue currentQueue = system.getFirst().getNext();

@@ -8,12 +8,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class InterStage extends Stage{
-    double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
-    Item currentItem;
-
-    Random r;
-    boolean blocked, starved, processing;
-    private ItemQueue previousQueue, nextQueue;
     private static double globalTime;
 
     public InterStage(ItemQueue p, ItemQueue n, int iM, int iN, String id) {//A constructor that creates an interstage with a next, previous and all other necessary data
@@ -35,8 +29,8 @@ public class InterStage extends Stage{
 
     public InterStage(InterStage inter){//copy constructor
         super(inter.M, inter.N);
-        super.setNext(inter.nextQueue);
-        super.setPrevious(inter.previousQueue);
+        super.setNext(inter.getNext());
+        super.setPrevious(inter.getNext());
         super.currentItem = inter.currentItem;
         super.starved = inter.starved;
         super.ID = inter.ID;
@@ -53,11 +47,11 @@ public class InterStage extends Stage{
 
     //setters
     public void setPrevious(ItemQueue previousQueue) {
-        this.previousQueue = previousQueue;
+        super.setPrevious(previousQueue);
     }
 
     public void setNext(ItemQueue nextQueue) {
-        this.nextQueue = nextQueue;
+        super.setNext(nextQueue);
     }
 
     @Override

@@ -9,9 +9,13 @@ public class Event implements Comparable<Event> {//An event class that is used f
         s = s1;
     }
 
+    public LinkedList<Event> process() {
+        return s.processFinish();
+    }
+
     public double getTime(){
         return time;
-    }//gets the time
+    }
 
 
     @Override

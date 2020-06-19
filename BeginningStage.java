@@ -6,21 +6,12 @@ import java.util.stream.Stream;
 
 public class BeginningStage extends Stage {
 
-    double totalTimePercentage, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
-    double totalTime, productionTime, starvingTime, blockedTime;
-
-    Item currentItem;
-    int size;
-    Random r;
-    boolean blocked, starved, processing;
-    private ItemQueue nextQueue;
-    private static double globalTime;
 
     public BeginningStage(ItemQueue next, int iM, int iN, String identifier) {//Constructor that creates a beginning stage with a next queue, identifier and all of the necessary data
         super(iM, iN);
         ID = identifier;
         currentItem = null;
-        nextQueue = next;
+        setNext(next);
     }
 
 
@@ -38,8 +29,8 @@ public class BeginningStage extends Stage {
     public LinkedList<Event> processFinish(){//An overridden process finish which adds to the next queue if it isn't full and then starts the creation of a new item
         LinkedList<Event> l = new LinkedList<>();
         Event ev;
-        if (!nextQueue.isFull()){
-            ev =nextQueue.add(currentItem);
+        if (!getNext().isFull()){
+            ev =getNext().add(currentItem);
             if(ev!=null)
                 l.add(ev);
             numProcessed++;
@@ -59,7 +50,7 @@ public class BeginningStage extends Stage {
         //String sG = g + "";
         //String identifier = sG.substring(0,5) +ID;
         currentItem = new Item("123abc");
-        double d = r.nextDouble();
+        double d = super.r.nextDouble();
         double t =  M + N * (d-0.5);
         return processStart(currentItem);
     }
@@ -72,13 +63,5 @@ public class BeginningStage extends Stage {
 
 
     //getters and setters
-    public void setNext(ItemQueue it){
-        nextQueue = it;
-    }
-
-    public ItemQueue getNext(){
-        return nextQueue;
-    }
-
 
 }

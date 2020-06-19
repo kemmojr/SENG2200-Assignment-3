@@ -9,12 +9,6 @@ import java.util.stream.Stream;
 
 public class FinalStage extends Stage {
 
-    double totalTime, productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
-    Item currentItem;
-    int size, numProcessed;
-    Random r;
-    boolean blocked, starved, processing;
-    private ItemQueue previousQueue;
     private static double globalTime;
 
     public FinalStage(ItemQueue previous, int iM, int iN) {//A constructor that initialises an empty final stage with all of the necessary data
@@ -35,8 +29,8 @@ public class FinalStage extends Stage {
     public Event processFinished(double time){//A specialised process finish for final stage
             numProcessed++;
             stopTime = time;
-        if (previousQueue.hasNext()){
-            return processStart(previousQueue.next());
+        if (super.getPrevious().hasNext()){
+            return processStart(super.getPrevious().next());
         }
         else{
             starved = true;
@@ -50,7 +44,7 @@ public class FinalStage extends Stage {
     }//Initialises global timeon final stage
 
     public int numProcessed(){
-        return numProcessed;
+        return super.numProcessed;
     }//get numProcessed
 
     @Override

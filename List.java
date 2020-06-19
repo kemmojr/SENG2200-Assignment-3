@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.util.*;
 import java.io.*;
 
-public class List implements Iterable{
+public class List{
 
         private BeginningStage head;
         private BeginningStage head2;
@@ -81,7 +81,7 @@ public class List implements Iterable{
         }
 
         public void append(String interStage){
-            InterStage in = new InterStage(queueTail,head.M,head.N, interStage);
+            InterStage in = new InterStage(head.M,head.N,interStage);
             if (queueTail.getNext1()==null){
                 in.setNext(null);
                 queueTail.setNext(in);
@@ -123,11 +123,6 @@ public class List implements Iterable{
             return null;
         }
 
-        // return Iterator instance
-        public Iterator iterator(){
-            return new ListIterator();
-        }
-
         public int getSize(){
             return size;
         }
@@ -135,67 +130,7 @@ public class List implements Iterable{
         @Override
         public String toString() {//A toString method that steps through the LinkedList and outputs in in the correct format
             String out = "";
-
-            ListIterator it = new ListIterator();//Creates an iterator to cycle through the linkedlist
-            while (it.hasNext()){
-                Data d = it.next();
-                if (d.getQueue()!=null){//Some basic if statement logic that prints the type of the iterator, either ItemQueue or Stage for each alternation of the iterator
-                    System.out.println(d.getQueue());
-                } else {
-                    System.out.println(d.getStage());
-                }
-            }
             return out;
-        }
-
-        private class ListIterator implements Iterator {//implementation of iterator
-            //These are the current variables that alternate with each iteration
-            private Stage currentStage; //A current variable that is used if current is of type stage
-            private ItemQueue currentQueue; //A current variable that is used if current is of type ItemQueue
-            private boolean currentType = true; //true is Stage, false is queue
-
-
-            public ListIterator(){//implementation of iterator
-                currentStage = head;
-            }//A basic constructor that sets the iterator to the head of the linkedlist
-
-            public boolean hasNext(){//implementation of iterator check for next
-                if (currentStage.getNext()!=null){
-                    return true;
-                }
-                return false;
-            }
-
-
-            public Data next(){//implementation of iterator move to next and return data
-                //Features the additional checks to see if there are parallel stages and to accommodate iterating them
-                boolean startingType = currentType;
-                Data d = null;
-                if (currentType && currentStage.getPrevious().getNext2()==null){//Checks to see if there are parallel stages and alternates the type accordingly
-                    currentType =false;
-                } else {
-                    currentType = true;
-                }
-
-
-
-                if (currentType==false){
-                    currentQueue = currentStage.getNext();
-                    d = new Data(currentQueue,null);
-                } else if (currentType){
-                    currentStage = currentStage.getNext().getNext1();
-                    d = new Data(null,currentStage);
-                } else if (currentType==startingType){//A check to make sure that parallel stages are iterated
-                    currentStage = currentStage.getPrevious().getNext2();
-                    d = new Data(null,currentStage);
-                }
-
-                return d;
-            }
-
-            public void remove(){//required to implement iterator but not used
-                throw new UnsupportedOperationException();
-            }
         }
 
 

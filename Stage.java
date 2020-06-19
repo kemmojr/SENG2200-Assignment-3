@@ -6,13 +6,13 @@ public abstract class Stage{
         double productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
         double totalTime, productionTime, starvingTime, blockedTime;
         Item currentItem;
-        int size, M, N, numProcessed;
+        int M, N, numProcessed;
         Random r;
         String ID;
         boolean blocked, starved, processing;
         double stopTime;
         private ItemQueue previousQueue, nextQueue;
-        private static double globalTime;
+        protected static double globalTime;
 
         public Stage(int iM, int iN){//creates an empty stage
            M = iM;
@@ -38,8 +38,10 @@ public abstract class Stage{
             //check if blocked or starved
             if (blocked){
                 blockedTime += globalTime - stopTime;
+                blocked = false;
             } else if (starved){
                 starvingTime += globalTime - stopTime;
+                starved = false;
             } else {
                 productionTime += globalTime;
             }
@@ -56,23 +58,24 @@ public abstract class Stage{
         LinkedList<Event> l = new LinkedList<>();
         Event ev;
         if (!nextQueue.isFull()){
-                    ev =nextQueue.add(currentItem);
-                    if(ev!=null)
-                        l.add(ev);
-                    numProcessed++;
-            } else{
-                 blocked = true;
-                 stopTime = globalTime;
-                 return null;
-            }
-            if (previousQueue.hasNext()){
-               l.add(processStart(previousQueue.next()));
-            }
-            else{
-               starved = true;
-                stopTime = globalTime;
-            }
-            return l;
+            ev =nextQueue.add(currentItem);
+            if(ev!=null)
+                l.add(ev);
+            numProcessed++;
+        }
+        else{
+            blocked = true;
+            stopTime = globalTime;
+            return null;
+        }
+        if (previousQueue.hasNext()){
+           l.add(processStart(previousQueue.next()));
+        }
+        else{
+           starved = true;
+            stopTime = globalTime;
+        }
+        return l;
 
     }
 
