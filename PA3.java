@@ -94,13 +94,6 @@ public class PA3 {
         events.add(S0b.itemCreation());
         Event newEvent;
         while (time < 10000000) {
-            if (counter==185)
-                System.out.println(185);
-            if (events.size() == 0)
-            {
-                System.out.println("No more events");
-                System.exit(1);
-            }
             currentEvent = events.poll();
             if (currentEvent==null){
                 System.out.println("Current event is null");
@@ -126,7 +119,7 @@ public class PA3 {
                     }
                 }
             } catch (Exception e){
-                System.out.println("NullPointerException");
+                //System.out.println("NullPointerException");
             }
             counter++;
         }
@@ -135,13 +128,13 @@ public class PA3 {
         //ItemQueue currentQueue = system.getFirst().getNext();
         System.out.println("Production Stations:");
         System.out.println("-----------------------------------------------------------------------------");
-        System.out.println("Stage:\tWork[%]\t\tStarve[t]\t\t\tBlock[t]");
+        System.out.println("Stage:\tWork[%]\t\tStarve[t]\t\t\t\t\t\t\t\tBlock[t]");
         for (Stage s: stageList){
             System.out.println(s);
         }
         System.out.println("Storage Queues:");
         System.out.println("-----------------------------------------------------------------------------");
-        System.out.println("Store\tAvgTime[t]\tAvgItems");
+        System.out.println("Store\tAvgTime[t]\t\tAvgItems");
         for (ItemQueue i: queueList){
             System.out.println(i);
         }
@@ -155,8 +148,8 @@ public class PA3 {
 
         System.out.println("Production Items:");
         System.out.println("-----------------------------------------------------------------------------");
-        System.out.println("S0a:\t" + "items produced");
-        System.out.println("S0b:\t" + "items produced");
+        System.out.println("S0a:\t" + S0a.getNumItemsProduced());
+        System.out.println("S0b:\t" + S0b.getNumItemsProduced());
 
         //System.out.println(events);
 

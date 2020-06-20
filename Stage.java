@@ -51,6 +51,7 @@ public abstract class Stage{
         public Event processStart(Item item){//The beginning of the processing of the Items.
             // Collects metrics about starving producing or blocked and starts the process finish which moves the item out of the stage and into the next queue
             //check if blocked or starved
+            item.addToPath(ID);
             if (blocked){
                 blockedTime += globalTime - stopTime;
                 blocked = false;
@@ -126,6 +127,6 @@ public abstract class Stage{
         n2.setMinimumFractionDigits(2);
         n.setMaximumFractionDigits(2);
         n.setMinimumFractionDigits(2);
-        return ID + "\t\t" + n.format(productionTimePercentage) + "\t\t" + n2.format(starvingTime) + "\t\t\t\t" + n2.format(blockedTime);
+        return ID + "\t\t" + n.format(productionTimePercentage) + "\t\t" + n2.format(starvingTime) + "\t\t\t\t\t\t\t\t" + n2.format(blockedTime);
     }
 }

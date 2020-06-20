@@ -1,3 +1,4 @@
+import java.text.NumberFormat;
 import java.util.*;
 
 public class ItemQueue {
@@ -6,10 +7,12 @@ public class ItemQueue {
     private LinkedList<Item> items;
     private int Qmax;
     String ID;
+    private int numProcessed;
     private double averageTimeIn, averageNumItems;
-    private double totalTimeIn, totalItems;
+    private double totalTimeIn, totalItems, addedTime;
     private ArrayList<Double> timeIn;
     private static double globalTime;
+    private double[] numItemTime;
 
     public ItemQueue(int q, String queueID){//ItemQueue constructor which initialises the id of the itemQueue, next and previous the item storage
         Qmax = q;
@@ -18,11 +21,13 @@ public class ItemQueue {
         nextStage = new ArrayList<>();
         timeIn = new ArrayList<>();
         ID = queueID;
+        numItemTime = new double[Qmax+1];
     }
 
     public ItemQueue(Stage prev, int Q){//empty constructor
         previousStage.add(prev);
         Qmax = Q;
+        numProcessed = 0;
     }
 
     public static void updateTime(double time){
@@ -53,8 +58,12 @@ public class ItemQueue {
     }
 
     public boolean add(Item it){//checks to see the next stage is empty and adds the item to the stage. Otherwise the item is added to the queue
-        double addedTime = globalTime;
-        double removedTime;
+
+        if (size()>-1){
+            numItemTime[size()] += globalTime - addedTime;
+            addedTime = globalTime;
+        }
+
         if (size()<Qmax) {
             items.add(it);
             return true;
@@ -71,6 +80,10 @@ public class ItemQueue {
     }
 
     public Item next(){
+        numProcessed++;
+        timeIn.add(globalTime-addedTime);
+        numItemTime[size()] += globalTime - addedTime;
+        addedTime = globalTime;
         return items.poll();
     }//gets the next item and removes it
 
@@ -112,8 +125,31 @@ public class ItemQueue {
         return Qmax;
     }
 
+    public double getAverageTime(){
+        double avgTime = 0;
+        for (double d:timeIn){
+            avgTime+=d;
+        }
+        return avgTime/numProcessed;
+    }
+
+    public double getAvgItems(){
+        double avgItem = 0;
+        double totalTime = 0;
+
+        for (int i =0;i<numItemTime.length;i++){
+            avgItem += i*numItemTime[i];
+            totalTime += numItemTime[i];
+        }
+        return avgItem/totalTime;
+    }
+
     @Override
     public String toString() {//A toString method that outputs a formatted set of itemQueue statistics
-        return  ID + "\t\t" + averageTimeIn + "\t\t\t" + averageNumItems;
+        NumberFormat n = NumberFormat.getInstance();
+        n.setMinimumFractionDigits(2);
+        n.setMaximumFractionDigits(2);
+
+        return  ID + "\t\t" + n.format(getAverageTime()) + "\t\t\t" + n.format(getAvgItems());
     }
 }

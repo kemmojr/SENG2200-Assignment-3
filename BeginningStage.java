@@ -6,12 +6,15 @@ import java.util.stream.Stream;
 
 public class BeginningStage extends Stage {
 
+    int numItemsProduced;
+
 
     public BeginningStage(ItemQueue next, int iM, int iN, String identifier) {//Constructor that creates a beginning stage with a next queue, identifier and all of the necessary data
         super(iM, iN);
         ID = identifier;
         currentItem = null;
         setNext(next);
+        numItemsProduced = 0;
     }
 
 
@@ -42,9 +45,14 @@ public class BeginningStage extends Stage {
         //getID g = new getID();
         //String sG = g + "";
         //String identifier = sG.substring(0,5) +ID;
+        numItemsProduced++;
         currentItem = new Item("123abc");
         double d = super.r.nextDouble();
         double t =  M + N * (d-0.5);
         return processStart(currentItem);
+    }
+
+    public int getNumItemsProduced(){
+        return numItemsProduced;
     }
 }
