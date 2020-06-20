@@ -1,3 +1,10 @@
+/*
+Author: Timothy Kemmis
+std no: c3329386
+BeginningStage.java
+SENG2200 Assignment 3
+ */
+
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
@@ -6,6 +13,7 @@ import java.util.stream.Stream;
 
 public class BeginningStage extends Stage {
 
+    //member variable
     int numItemsProduced;
 
 

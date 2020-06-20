@@ -1,6 +1,14 @@
+/*
+Author: Timothy Kemmis
+std no: c3329386
+Event.java
+SENG2200 Assignment 3
+ */
+
 import java.util.LinkedList;
 
 public class Event implements Comparable<Event> {//An event class that is used for returning multiple data types from a function
+    //member variables
     private double time;
     private Stage s;
 

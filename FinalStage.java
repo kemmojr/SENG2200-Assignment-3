@@ -1,3 +1,10 @@
+/*
+Author: Timothy Kemmis
+std no: c3329386
+FinalStage.java
+SENG2200 Assignment 3
+ */
+
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
@@ -6,6 +13,7 @@ import java.util.stream.Stream;
 
 public class FinalStage extends Stage {
 
+    //member variables
     LinkedList<Item> finishedItems;
 
     public FinalStage(ItemQueue previous, int iM, int iN) {//A constructor that initialises an empty final stage with all of the necessary data

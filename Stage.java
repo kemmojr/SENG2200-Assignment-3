@@ -1,16 +1,23 @@
+/*
+Author: Timothy Kemmis
+std no: c3329386
+Stage.java
+SENG2200 Assignment 3
+ */
+
 import java.text.NumberFormat;
 import java.util.*;
 
 public abstract class Stage{
 
-
-        double productionTimePercentage, starvingTimePercentage, blockedTimePercentage;
-        double totalTime, productionTime, starvingTime, blockedTime;
+        //member variables
+        double productionTimePercentage;
+        double productionTime, starvingTime, blockedTime;
         Item currentItem;
         int M, N, numProcessed;
         Random r;
         String ID;
-        boolean blocked, starved, processing;
+        boolean blocked, starved;
         double stopTime;
         private ItemQueue previousQueue, nextQueue;
         protected static double globalTime;
@@ -30,18 +37,18 @@ public abstract class Stage{
             r = new Random(100);
         }
 
-        public static void updateTime(double time){
+        public static void updateTime(double time){//Initialises the global time in stage
             globalTime = time;
-        }//Initialises the global time in stage
+        }
 
-        public Event attemptProcess(){
+        public Event attemptProcess(){//Checks to see if a starved stage can restart processing
             if (previousQueue.size()>0){
                 return processStart(previousQueue.poll());
             }
             return null;
         }
 
-        public Event attemptUnblock(){
+        public Event attemptUnblock(){//Checks to see if the stage has become unblocked
             if (nextQueue.size()<nextQueue.getQmax()){
                 return processFinish();
             }
@@ -71,7 +78,7 @@ public abstract class Stage{
     public Event processFinish(){//Checks the next queue and adds the item to it if the queue is not full.
         //Also updates the numprocessed
         //Returns a list of all of the events that occur during it's duration
-
+        //And gathers metrics on blocked and starved
 
         if (!nextQueue.isFull()){
             nextQueue.add(currentItem);
@@ -113,9 +120,9 @@ public abstract class Stage{
             return blocked;
     }//gets blocked
 
-    public boolean isStarved() {
+    public boolean isStarved() {//Gets starved
         return starved;
-    }//gets starved
+    }
 
     @Override
     public String toString() {//A toString method that formats the stage to display the metrics

@@ -1,9 +1,15 @@
+/*
+Author: Timothy Kemmis
+std no: c3329386
+PA3.java
+SENG2200 Assignment 3
+ */
+
 import java.lang.*;
 import java.util.*;
 import java.io.*;
 
 public class PA3 {
-    private static Object Iterator;
 
     public static void main(String args[]){
         int M, N, Qmax, numProcess = 0;
@@ -14,7 +20,7 @@ public class PA3 {
         N = Integer.parseInt(args[1]);
         Qmax = Integer.parseInt(args[2]);
 
-        List system = new List(M,N,Qmax);
+
         //Assemble the system structure as per the spec. I have named each addition the same as it's counterpart on the spec diagram
 
         LinkedList<ItemQueue> queueList = new LinkedList<>();
@@ -72,22 +78,6 @@ public class PA3 {
         Q56.setPrevious(S5b);
         Q56.setNext(S6);
 
-
-        /*system.append();
-        system.append("S1");
-        system.append(1.2);
-        system.append("S2");
-        system.append(2.3);
-        system.append("S3A");
-        system.append("S3B");
-        system.append(3.4);
-        system.append("S4");
-        system.append(4.5);
-        system.append("S5A");
-        system.append("S5B");
-        system.append(5.6);
-        system.append(6);*/
-
         PriorityQueue<Event> events = new PriorityQueue<Event>();
         int counter = 0;
         events.add(S0a.itemCreation());
@@ -119,13 +109,11 @@ public class PA3 {
                     }
                 }
             } catch (Exception e){
-                //System.out.println("NullPointerException");
+                //catches any errors
             }
             counter++;
         }
-        //Iterator = system.iterator();
-        //Stage current = system.getFirst();
-        //ItemQueue currentQueue = system.getFirst().getNext();
+
         System.out.println("\nProduction Stations:");
         System.out.println("-----------------------------------------------------------------------------");
         System.out.println("Stage:\tWork[%]\t\tStarve[t]\t\t\t\t\t\t\t\tBlock[t]");
@@ -150,9 +138,5 @@ public class PA3 {
         System.out.println("-----------------------------------------------------------------------------");
         System.out.println("S0a:\t" + S0a.getNumItemsProduced());
         System.out.println("S0b:\t" + S0b.getNumItemsProduced());
-
-        //System.out.println(events);
-
-
     }
 }

@@ -1,8 +1,16 @@
+/*
+Author: Timothy Kemmis
+std no: c3329386
+ItemQueue.java
+SENG2200 Assignment 3
+ */
+
 import java.text.NumberFormat;
 import java.util.*;
 
 public class ItemQueue {
 
+    //member variables
     private ArrayList<Stage> previousStage, nextStage;
     private LinkedList<Item> items;
     private int Qmax;
@@ -30,25 +38,25 @@ public class ItemQueue {
         numProcessed = 0;
     }
 
-    public static void updateTime(double time){
+    public static void updateTime(double time){//initialises the global time variable in ItemQueue
         globalTime = time;
-    }//initialises the global time variable in ItemQueue
+    }
 
-    public int size() {
+    public int size() {//getSize
         return items.size();
-    }//getSize
+    }
 
-    public boolean isEmpty() {
+    public boolean isEmpty() {//is the queue empty
         return items.isEmpty();
-    }//is the queue empty
+    }
 
-    public Item poll(){
+    public Item poll(){//return the top element and remove it
         return items.poll();
-    }//return the top element and remove it
+    }
 
-    public Item peek(){
+    public Item peek(){//return the top item of the queue
         return items.peek();
-    }//return the top item of the queue
+    }
 
     public boolean isFull(){//return true if the queue is full
         if (size()==Qmax){
@@ -58,18 +66,15 @@ public class ItemQueue {
     }
 
     public boolean add(Item it){//checks to see the next stage is empty and adds the item to the stage. Otherwise the item is added to the queue
-
         if (size()>-1){
             numItemTime[size()] += globalTime - addedTime;
             addedTime = globalTime;
         }
-
         if (size()<Qmax) {
             items.add(it);
             return true;
         }
         return false;
-
     }
 
     public boolean hasNext(){//checks if there are any items in the queue
@@ -79,13 +84,13 @@ public class ItemQueue {
         return false;
     }
 
-    public Item next(){
+    public Item next(){//gets the next item and removes it
         numProcessed++;
         timeIn.add(globalTime-addedTime);
         numItemTime[size()] += globalTime - addedTime;
         addedTime = globalTime;
         return items.poll();
-    }//gets the next item and removes it
+    }
 
     public Stage getNext1() {//gets the first stage that is after the itemQueue
         if (nextStage.size()==0){
@@ -121,11 +126,11 @@ public class ItemQueue {
         }
     }
 
-    public int getQmax(){
+    public int getQmax(){//gets Qmax
         return Qmax;
     }
 
-    public double getAverageTime(){
+    public double getAverageTime(){//Calculates the average amount of time an item spends in the queue
         double avgTime = 0;
         for (double d:timeIn){
             avgTime+=d;
@@ -133,7 +138,7 @@ public class ItemQueue {
         return avgTime/numProcessed;
     }
 
-    public double getAvgItems(){
+    public double getAvgItems(){//Calculates the average number of items in the queue at any time
         double avgItem = 0;
         double totalTime = 0;
 

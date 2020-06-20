@@ -1,3 +1,10 @@
+/*
+Author: Timothy Kemmis
+std no: c3329386
+InterStage.java
+SENG2200 Assignment 3
+ */
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
