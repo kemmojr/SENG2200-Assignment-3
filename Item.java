@@ -28,4 +28,13 @@ public class Item {
     public LinkedList<String> getPath() {
         return path;
     }
+
+    public boolean doesPathInclude(String id){
+        for (String s:path){
+            if (id.equals(s)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

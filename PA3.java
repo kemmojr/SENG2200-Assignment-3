@@ -126,27 +126,27 @@ public class PA3 {
         //Iterator = system.iterator();
         //Stage current = system.getFirst();
         //ItemQueue currentQueue = system.getFirst().getNext();
-        System.out.println("Production Stations:");
+        System.out.println("\nProduction Stations:");
         System.out.println("-----------------------------------------------------------------------------");
         System.out.println("Stage:\tWork[%]\t\tStarve[t]\t\t\t\t\t\t\t\tBlock[t]");
         for (Stage s: stageList){
             System.out.println(s);
         }
-        System.out.println("Storage Queues:");
+        System.out.println("\nStorage Queues:");
         System.out.println("-----------------------------------------------------------------------------");
         System.out.println("Store\tAvgTime[t]\t\tAvgItems");
         for (ItemQueue i: queueList){
             System.out.println(i);
         }
 
-        System.out.println("Production Paths:");
+        System.out.println("\nProduction Paths:");
         System.out.println("-----------------------------------------------------------------------------");
-        System.out.println("S3a\t->\tS5a:");
-        System.out.println("S3a\t->\tS5b:");
-        System.out.println("S3b\t->\tS5a:");
-        System.out.println("S3b\t->\tS5b:");
+        System.out.println("S3a\t->\tS5a:\t" + S6.getProductionPath("S3a","S5a") );
+        System.out.println("S3a\t->\tS5b:\t" + S6.getProductionPath("S3a","S5b"));
+        System.out.println("S3b\t->\tS5a:\t" + S6.getProductionPath("S3b","S5a"));
+        System.out.println("S3b\t->\tS5b:\t" + S6.getProductionPath("S3b","S5b"));
 
-        System.out.println("Production Items:");
+        System.out.println("\nProduction Items:");
         System.out.println("-----------------------------------------------------------------------------");
         System.out.println("S0a:\t" + S0a.getNumItemsProduced());
         System.out.println("S0b:\t" + S0b.getNumItemsProduced());
